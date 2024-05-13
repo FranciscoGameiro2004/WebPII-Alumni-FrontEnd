@@ -76,6 +76,7 @@
               :menu-on-right="!$rtl.isRTL"
               title-tag="a"
               class="nav-item"
+              v-if="loggedIn"
             >
               <a
                 slot="title"
@@ -118,6 +119,7 @@
               title-tag="a"
               class="nav-item"
               menu-classes="dropdown-navbar"
+              v-if="loggedIn"
             >
               <a
                 slot="title"
@@ -143,6 +145,34 @@
                 <a href="#" class="nav-item dropdown-item">Log out</a>
               </li>
             </base-dropdown>
+            <base-dropdown
+              tag="li"
+              :menu-on-right="!$rtl.isRTL"
+              title-tag="a"
+              class="nav-item"
+              menu-classes="dropdown-navbar"
+              v-if="!loggedIn"
+            >
+
+              <a
+                slot="title"
+                href="#"
+                class="dropdown-toggle nav-link"
+                data-toggle="dropdown"
+                aria-expanded="true"
+              >
+              <i class="tim-icons icon-single-02"></i>
+                <b class="caret d-none d-lg-block d-xl-block"></b>
+                <p class="d-lg-none">Account</p>
+              </a>
+              <li class="nav-link">
+                <a class="nav-item dropdown-item" @click="$router.push({name: 'register'})">Register</a>
+              </li>
+              <div class="dropdown-divider"></div>
+              <li class="nav-link">
+                <a class="nav-item dropdown-item" @click="$router.push({name: 'login'})">Log In</a>
+              </li>
+            </base-dropdown>
           </ul>
         </div>
       </collapse-transition>
@@ -166,6 +196,9 @@ export default {
     isRTL() {
       return this.$rtl.isRTL;
     },
+    loggedIn(){
+      return this.session
+    },
   },
   data() {
     return {
@@ -173,6 +206,7 @@ export default {
       showMenu: false,
       searchModalVisible: false,
       searchQuery: "",
+      session: false,
     };
   },
   methods: {

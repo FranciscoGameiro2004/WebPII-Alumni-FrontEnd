@@ -25,6 +25,7 @@
         v-on="listeners"
         class="form-control"
         aria-describedby="addon-right addon-left"
+        :type="inputType"
       />
     </slot>
     <slot name="addonRight">
@@ -58,6 +59,11 @@ export default {
       type: String,
       description: "Input icon on the left",
     },
+    useAsPassword: {
+      type: Boolean,
+      description: 'Determines if the input is going to be used in a password',
+      default: false
+    }
   },
   model: {
     prop: "value",
@@ -86,6 +92,12 @@ export default {
         focus: this.onFocus,
       };
     },
+    inputType(){
+      if (this.useAsPassword) {
+        return 'password'
+      }
+      return 'text'
+    }
   },
   methods: {
     onInput(evt) {

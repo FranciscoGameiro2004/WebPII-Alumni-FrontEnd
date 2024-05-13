@@ -14,4 +14,18 @@ const router = new VueRouter({
   },
 });
 
+// Nota: Variável temporária
+const logged = false
+router.beforeEach((to, from, next) => {
+  if (to.meta.alreadyAuth) {
+    if (!logged) {
+      next()
+    } else if (from.name == null){
+      next('dashboard')
+    }
+  } else {
+    next()
+  }
+})
+
 export default router;

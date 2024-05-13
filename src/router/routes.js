@@ -16,6 +16,11 @@ const Typography = () =>
   import(/* webpackChunkName: "common" */ "@/pages/Typography.vue");
 const TableList = () =>
   import(/* webpackChunkName: "common" */ "@/pages/TableList.vue");
+ 
+const Login = () => 
+  import(/* webpackChunkName: "common" */ "@/pages/Login.vue")
+const Register = () => 
+  import(/* webpackChunkName: "common" */ "@/pages/Register.vue")
 
 const routes = [
   {
@@ -57,6 +62,22 @@ const routes = [
         path: "table-list",
         name: "table-list",
         component: TableList,
+      },
+      {
+        path: "login",
+        name: "login",
+        component: Login,
+        meta: {
+          alreadyAuth: true
+        }
+      },
+      {
+        path: "signin",
+        name: "register",
+        component: Register,
+        meta: {
+          alreadyAuth: true
+        }
       },
     ],
   },
