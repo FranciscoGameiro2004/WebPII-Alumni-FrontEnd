@@ -19,7 +19,7 @@
             />
           </div>
         </a>
-        <a href="http://www.creative-tim.com" class="simple-text logo-normal">
+        <a @click="$router.push({name: 'dashboard'})" class="simple-text logo-normal">
           {{ title }}
         </a>
       </div>

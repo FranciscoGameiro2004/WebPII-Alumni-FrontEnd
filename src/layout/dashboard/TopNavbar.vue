@@ -206,7 +206,7 @@ export default {
       showMenu: false,
       searchModalVisible: false,
       searchQuery: "",
-      session: false,
+      session: true,
     };
   },
   methods: {

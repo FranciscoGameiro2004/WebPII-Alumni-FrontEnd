@@ -13,11 +13,15 @@
       <p class="description">
         {{ user.title }}
       </p>
+      <p class="description">
+        <b>LVL {{ user.level }}</b>
+      </p>
     </div>
     <p></p>
-    <p class="card-description">
-      {{ user.description }}
-    </p>
+    <div v-if="!ownProfile" class="d-flex justify-content-center">
+      <base-button type="primary" v-if="!user.following">Follow</base-button>
+      <base-button simple type="primary" v-else>Unfollow</base-button>
+    </div>
     <div slot="footer" class="button-container">
       <base-button icon round class="btn-facebook">
         <i class="fab fa-facebook"></i>
@@ -29,6 +33,12 @@
         <i class="fab fa-google-plus"></i>
       </base-button>
     </div>
+
+    <div slot="footer" v-if="ownProfile" class="d-flex flex-row-reverse">
+        <base-button round icon type="warning">
+          <router-link :to="{hash: '#editProfile'}"><i class="tim-icons icon-pencil text-white"></i></router-link>
+        </base-button>
+    </div>
   </card>
 </template>
 <script>
@@ -38,6 +48,12 @@ export default {
       type: Object,
       default: () => {
         return {};
+      },
+    },
+    ownProfile: {
+      type: Boolean,
+      default: () => {
+        return false;
       },
     },
   },
