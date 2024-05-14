@@ -14,11 +14,18 @@ const router = new VueRouter({
   },
 });
 
-// Nota: Variável temporária
+// Nota: Variáveis temporárias
 const logged = true
+const admin = true
 router.beforeEach((to, from, next) => {
   if (to.meta.alreadyAuth) {
     if (!logged) {
+      next()
+    } else if (from.name == null){
+      next('dashboard')
+    }
+  } else if (to.meta.adminRequired) {
+    if (admin) {
       next()
     } else if (from.name == null){
       next('dashboard')

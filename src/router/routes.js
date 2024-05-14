@@ -21,6 +21,18 @@ const Login = () =>
 const Register = () => 
   import(/* webpackChunkName: "common" */ "@/pages/Register.vue")
 
+const DegreeConfig = () =>
+  import(/* webpackChunkName: "common" */ "@/pages/ADMIN_DegreeConfig.vue")
+
+const InstitutionConfig = () =>
+  import(/* webpackChunkName: "common" */ "@/pages/ADMIN_InstitutionConfig.vue")
+
+const CompanyConfig = () =>
+  import(/* webpackChunkName: "common" */ "@/pages/ADMIN_CompanyConfig.vue")
+
+const UserConfig = () =>
+  import(/* webpackChunkName: "common" */ "@/pages/ADMIN_UsersConfig.vue")
+
 const routes = [
   {
     path: "/",
@@ -76,6 +88,38 @@ const routes = [
         component: Register,
         meta: {
           alreadyAuth: true
+        }
+      },
+      {
+        path: "admin/degree",
+        name: "degreeConfig",
+        component: DegreeConfig,
+        meta: {
+          adminRequired: true
+        }
+      },
+      {
+        path: "admin/institution",
+        name: "institutionConfig",
+        component: InstitutionConfig,
+        meta: {
+          adminRequired: true
+        }
+      },
+      {
+        path: "admin/user",
+        name: "userConfig",
+        component: UserConfig,
+        meta: {
+          adminRequired: true
+        }
+      },
+      {
+        path: "admin/company",
+        name: "companyConfig",
+        component: CompanyConfig,
+        meta: {
+          adminRequired: true
         }
       },
     ],
