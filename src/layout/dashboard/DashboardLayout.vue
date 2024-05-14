@@ -94,7 +94,7 @@ export default {
   computed: {
     isAdmin() {
       return true 
-    }
+    },
   },
 };
 </script>

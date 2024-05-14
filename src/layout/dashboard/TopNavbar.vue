@@ -70,6 +70,42 @@
                 id="inlineFormInputGroup"
                 placeholder="SEARCH"
               />
+              <div>
+                <!-- User section -->
+                <div class="d-flex justify-content-around">
+                  <card
+                    class="d-flex flex-row col-md-5"
+                    v-for="user in filteredUsers"
+                    :key="user.id"
+                    >
+                      <img
+                        slot="image"
+                        class=""
+                        :src="user.profilePicURL"
+                        alt="Card image cap"
+                        height="115px"
+                        width="115px" />
+                        <router-link
+                      :to="{ name: 'profile', params: { id: user.id } }"
+                    >
+                      <div class="d-flex justify-content-between">
+                        <div class="d-flex flex-column justify-content-center">
+                          <div
+                            class="d-flex flex-column justify-content-center"
+                          >
+                            <h2 class="card-title">
+                              {{ user.name }}
+                            </h2>
+                            <h5 class="card-subtitle mb-2">
+                              LVL {{ user.level }} - {{ user.nameTag }}
+                            </h5>
+                          </div>
+                        </div>
+                        <div class="d-flex flex-column"></div></div
+                    ></router-link>
+                  </card>
+                </div>
+              </div>
             </modal>
             <base-dropdown
               tag="li"
@@ -153,7 +189,6 @@
               menu-classes="dropdown-navbar"
               v-if="!loggedIn"
             >
-
               <a
                 slot="title"
                 href="#"
@@ -161,16 +196,24 @@
                 data-toggle="dropdown"
                 aria-expanded="true"
               >
-              <i class="tim-icons icon-single-02"></i>
+                <i class="tim-icons icon-single-02"></i>
                 <b class="caret d-none d-lg-block d-xl-block"></b>
                 <p class="d-lg-none">Account</p>
               </a>
               <li class="nav-link">
-                <a class="nav-item dropdown-item" @click="$router.push({name: 'register'})">Register</a>
+                <a
+                  class="nav-item dropdown-item"
+                  @click="$router.push({ name: 'register' })"
+                  >Register</a
+                >
               </li>
               <div class="dropdown-divider"></div>
               <li class="nav-link">
-                <a class="nav-item dropdown-item" @click="$router.push({name: 'login'})">Log In</a>
+                <a
+                  class="nav-item dropdown-item"
+                  @click="$router.push({ name: 'login' })"
+                  >Log In</a
+                >
               </li>
             </base-dropdown>
           </ul>
@@ -196,8 +239,14 @@ export default {
     isRTL() {
       return this.$rtl.isRTL;
     },
-    loggedIn(){
-      return this.session
+    loggedIn() {
+      return this.session;
+    },
+    filteredUsers() {
+      const users = this.users.filter((user) =>
+        user.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+      return this.searchQuery !== "" ? users : [];
     },
   },
   data() {
@@ -207,6 +256,27 @@ export default {
       searchModalVisible: false,
       searchQuery: "",
       session: true,
+      //! DUMMY USERS
+      users: [
+        {
+          id: 1,
+          name: "	Andrew Mike",
+          level: "10",
+          nameTag: "Develop",
+          type: "Normal",
+          restricted: true,
+          profilePicURL: 'https://placehold.co/240',
+        },
+        {
+          id: 2,
+          name: "	John Doe",
+          level: "20",
+          nameTag: "Design",
+          type: "Admin",
+          restricted: false,
+          profilePicURL: 'https://placehold.co/240',
+        },
+      ],
     };
   },
   methods: {
