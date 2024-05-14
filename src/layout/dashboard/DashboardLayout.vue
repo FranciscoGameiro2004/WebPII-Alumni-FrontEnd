@@ -7,6 +7,35 @@
           :name="$t('sidebar.dashboard')"
           icon="tim-icons icon-chart-pie-36"
         />
+        <div v-if="isAdmin">
+          <hr>
+        <sidebar-link
+          to="/admin/degree"
+          name="Degrees"
+          icon="tim-icons icon-chart-pie-36"
+          
+        />
+        <sidebar-link
+          to="/admin/institution"
+          name="Institutions"
+          icon="tim-icons icon-chart-pie-36"
+          
+        />
+        <sidebar-link
+          to="/admin/company"
+          name="Companies"
+          icon="tim-icons icon-chart-pie-36"
+          
+        />
+        <sidebar-link
+          to="/admin/user"
+          name="Users"
+          icon="tim-icons icon-chart-pie-36"
+          
+        />
+        <hr>
+      </div>
+        <br>
         <sidebar-link
           to="/icons"
           :name="$t('sidebar.icons')"
@@ -61,6 +90,11 @@ export default {
         this.$sidebar.displaySidebar(false);
       }
     },
+  },
+  computed: {
+    isAdmin() {
+      return true 
+    }
   },
 };
 </script>
