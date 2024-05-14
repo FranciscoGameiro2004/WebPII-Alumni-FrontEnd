@@ -12,30 +12,31 @@
         <sidebar-link
           to="/admin/degree"
           name="Degrees"
-          icon="tim-icons icon-chart-pie-36"
+          icon="tim-icons icon-book-bookmark"
           
         />
         <sidebar-link
           to="/admin/institution"
           name="Institutions"
-          icon="tim-icons icon-chart-pie-36"
+          icon="tim-icons icon-bank"
           
         />
         <sidebar-link
           to="/admin/company"
           name="Companies"
-          icon="tim-icons icon-chart-pie-36"
+          icon="tim-icons icon-badge"
           
         />
         <sidebar-link
           to="/admin/user"
           name="Users"
-          icon="tim-icons icon-chart-pie-36"
+          icon="tim-icons icon-single-02"
           
         />
         <hr>
       </div>
-        <br>
+        <div v-if="showTemplatePages">
+          <br>
         <sidebar-link
           to="/icons"
           :name="$t('sidebar.icons')"
@@ -61,6 +62,7 @@
           :name="$t('sidebar.rtlSupport')"
           icon="tim-icons icon-world"
         />
+        </div>
       </template>
     </side-bar>
     <div class="main-panel">
@@ -95,6 +97,11 @@ export default {
     isAdmin() {
       return true 
     },
+  },
+  data() {
+    return {
+      showTemplatePages: false
+    }
   },
 };
 </script>
