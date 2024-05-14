@@ -6,10 +6,7 @@
           <template slot="header">
             <div class="row">
               <div class="col-sm-6" :class="isRTL ? 'text-right' : 'text-left'">
-                <h5 class="card-category">
-                  {{ $t("dashboard.totalShipments") }}
-                </h5>
-                <h2 class="card-title">{{ $t("dashboard.performance") }}</h2>
+                <h2 class="card-title">{{ "% Alumni" }}</h2>
               </div>
               <div class="col-sm-6">
                 <div
@@ -38,7 +35,7 @@
             </div>
           </template>
           <div class="chart-area">
-            <line-chart
+            <bar-chart
               style="height: 100%"
               ref="bigChart"
               chart-id="big-line-chart"
@@ -47,40 +44,16 @@
               :gradient-stops="bigLineChart.gradientStops"
               :extra-options="bigLineChart.extraOptions"
             >
-            </line-chart>
+            </bar-chart>
           </div>
         </card>
       </div>
     </div>
     <div class="row">
-      <div class="col-lg-4" :class="{ 'text-right': isRTL }">
+      <div class="col-lg-6" :class="{ 'text-right': isRTL }">
         <card type="chart">
           <template slot="header">
-            <h5 class="card-category">{{ $t("dashboard.totalShipments") }}</h5>
-            <h3 class="card-title">
-              <i class="tim-icons icon-bell-55 text-primary"></i> 763,215
-            </h3>
-          </template>
-          <div class="chart-area">
-            <line-chart
-              style="height: 100%"
-              chart-id="purple-line-chart"
-              :chart-data="purpleLineChart.chartData"
-              :gradient-colors="purpleLineChart.gradientColors"
-              :gradient-stops="purpleLineChart.gradientStops"
-              :extra-options="purpleLineChart.extraOptions"
-            >
-            </line-chart>
-          </div>
-        </card>
-      </div>
-      <div class="col-lg-4" :class="{ 'text-right': isRTL }">
-        <card type="chart">
-          <template slot="header">
-            <h5 class="card-category">{{ $t("dashboard.dailySales") }}</h5>
-            <h3 class="card-title">
-              <i class="tim-icons icon-delivery-fast text-info"></i> 3,500€
-            </h3>
+            <h2 class="card-title">{{ "Maior grau obtido" }}</h2>
           </template>
           <div class="chart-area">
             <bar-chart
@@ -94,66 +67,21 @@
           </div>
         </card>
       </div>
-      <div class="col-lg-4" :class="{ 'text-right': isRTL }">
+      <div class="col-lg-6" :class="{ 'text-right': isRTL }">
         <card type="chart">
           <template slot="header">
-            <h5 class="card-category">{{ $t("dashboard.completedTasks") }}</h5>
-            <h3 class="card-title">
-              <i class="tim-icons icon-send text-success"></i> 12,100K
-            </h3>
+            <h2 class="card-title">{{ "Empregabilidade dos Licenciados" }}</h2>
+            <h5 class="card-category">{{ "Em até 1 ano após a conclusão da Licenciatura em Tecnologias e Sistemas de Informação para a Web" }}</h5>
           </template>
           <div class="chart-area">
-            <line-chart
+            <bar-chart
               style="height: 100%"
-              chart-id="green-line-chart"
-              :chart-data="greenLineChart.chartData"
-              :gradient-stops="greenLineChart.gradientStops"
-              :extra-options="greenLineChart.extraOptions"
+              chart-id="blue-bar-chart"
+              :chart-data="blueBarChart2.chartData"
+              :gradient-stops="blueBarChart2.gradientStops"
+              :extra-options="blueBarChart2.extraOptions"
             >
-            </line-chart>
-          </div>
-        </card>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-lg-6 col-md-12">
-        <card type="tasks" :header-classes="{ 'text-right': isRTL }">
-          <template slot="header">
-            <h6 class="title d-inline">
-              {{ $t("dashboard.tasks", { count: 5 }) }}
-            </h6>
-            <p class="card-category d-inline">{{ $t("dashboard.today") }}</p>
-            <base-dropdown
-              menu-on-right=""
-              tag="div"
-              title-classes="btn btn-link btn-icon"
-              aria-label="Settings menu"
-              :class="{ 'float-left': isRTL }"
-            >
-              <i slot="title" class="tim-icons icon-settings-gear-63"></i>
-              <a class="dropdown-item" href="#pablo">{{
-                $t("dashboard.dropdown.action")
-              }}</a>
-              <a class="dropdown-item" href="#pablo">{{
-                $t("dashboard.dropdown.anotherAction")
-              }}</a>
-              <a class="dropdown-item" href="#pablo">{{
-                $t("dashboard.dropdown.somethingElse")
-              }}</a>
-            </base-dropdown>
-          </template>
-          <div class="table-full-width table-responsive">
-            <task-list></task-list>
-          </div>
-        </card>
-      </div>
-      <div class="col-lg-6 col-md-12">
-        <card class="card" :header-classes="{ 'text-right': isRTL }">
-          <h4 slot="header" class="card-title">
-            {{ $t("dashboard.simpleTable") }}
-          </h4>
-          <div class="table-responsive">
-            <user-table></user-table>
+            </bar-chart>
           </div>
         </card>
       </div>
@@ -179,9 +107,9 @@ export default {
     return {
       bigLineChart: {
         allData: [
-          [100, 70, 90, 70, 85, 60, 75, 60, 90, 80, 110, 100],
-          [80, 120, 105, 110, 95, 105, 90, 100, 80, 95, 70, 120],
-          [60, 80, 65, 130, 80, 105, 90, 130, 70, 115, 60, 130],
+          [100, 70, 90, 70, 85, 75, 90, 80, 110],
+          [48, 49, 3],
+          [75, 35],
         ],
         activeIndex: 0,
         chartData: {
@@ -201,7 +129,7 @@ export default {
             "DEC",
           ],
         },
-        extraOptions: chartConfigs.purpleChartOptions,
+        extraOptions: chartConfigs.barChartOptions,
         gradientColors: config.colors.primaryGradient,
         gradientStops: [1, 0.4, 0],
         categories: [],
@@ -265,7 +193,7 @@ export default {
       blueBarChart: {
         extraOptions: chartConfigs.barChartOptions,
         chartData: {
-          labels: ["USA", "GER", "AUS", "UK", "RO", "BR"],
+          labels: ["Licenciado", "Mestre", "Especialista", "Doutor"],
           datasets: [
             {
               label: "Countries",
@@ -274,13 +202,54 @@ export default {
               borderWidth: 2,
               borderDash: [],
               borderDashOffset: 0.0,
-              data: [53, 20, 10, 80, 100, 45],
+              data: [53, 20, 10, 80],
             },
           ],
         },
         gradientColors: config.colors.primaryGradient,
         gradientStops: [1, 0.4, 0],
       },
+      blueBarChart2: {
+        extraOptions: chartConfigs.barChartOptions,
+        chartData: {
+          labels: ["Com Emprego", 'Sem Emprego'],
+          datasets: [
+            {
+              label: "Countries",
+              fill: true,
+              borderColor: config.colors.info,
+              borderWidth: 2,
+              borderDash: [],
+              borderDashOffset: 0.0,
+              data: [97, 3],
+            },
+          ],
+        },
+        gradientColors: config.colors.primaryGradient,
+        gradientStops: [1, 0.4, 0],
+      },
+      bigLabels: [
+      [
+          "Vila do Conde",
+          "Póvoa de Varzim",
+          "Porto",
+          "Maia",
+          "Matosinhos",
+          "Penafiel",
+          "Santo Tirso",
+          "Gondomar",
+          "Santa Maria da Feira",
+        ],
+        [
+          "Masculino",
+          "Feminino",
+          "Outro"
+        ],
+        [
+          "Português",
+          "Estrangeiro"
+        ],
+      ]
     };
   },
   computed: {
@@ -291,7 +260,7 @@ export default {
       return this.$rtl.isRTL;
     },
     bigLineChartCategories() {
-      return this.$t("dashboard.chartCategories");
+      return ['Cidade', 'Gênero', 'Nacionalidade'];
     },
   },
   methods: {
@@ -314,20 +283,7 @@ export default {
             data: this.bigLineChart.allData[index],
           },
         ],
-        labels: [
-          "JAN",
-          "FEB",
-          "MAR",
-          "APR",
-          "MAY",
-          "JUN",
-          "JUL",
-          "AUG",
-          "SEP",
-          "OCT",
-          "NOV",
-          "DEC",
-        ],
+        labels: this.bigLabels[index]
       };
       this.$refs.bigChart.updateGradients(chartData);
       this.bigLineChart.chartData = chartData;
