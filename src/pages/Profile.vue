@@ -7,7 +7,7 @@
       <card>
         <div class="d-flex justify-content-between">
           <h4 class="card-title">Academic</h4>
-          <base-button round icon type="default">
+          <base-button round icon type="default" v-if="ownProfile" @click="toggleAdd(); modals.newAcademic = true">
             <i class="tim-icons icon-simple-add text-white"></i>
           </base-button>
         </div>
@@ -33,15 +33,13 @@
               <a href="#" class="card-link">Site Instituição</a>
             </div>
             <div v-if="ownProfile" class="d-flex flex-column">
-              <base-button round icon type="warning">
-                <router-link :to="{ hash: '#editProfile' }"
-                  ><i class="tim-icons icon-pencil text-white"></i
-                ></router-link>
+              <base-button round icon type="warning" @click="toggleEdit(); modals.newAcademic = true">
+                  <i class="tim-icons icon-pencil text-white"></i
+                >
               </base-button>
               <base-button round icon type="danger">
-                <router-link :to="{ hash: '#editProfile' }"
-                  ><i class="tim-icons icon-trash-simple text-white"></i
-                ></router-link>
+                <i class="tim-icons icon-trash-simple text-white"></i
+                >
               </base-button>
             </div>
           </div>
@@ -53,7 +51,7 @@
       <card>
         <div class="d-flex justify-content-between">
           <h4 class="card-title">Professional Career</h4>
-          <base-button round icon type="default">
+          <base-button round icon type="default" @click="toggleAdd(); modals.newCareer = true" v-if="ownProfile">
             <i class="tim-icons icon-simple-add text-white"></i>
           </base-button>
         </div>
@@ -74,15 +72,13 @@
               <a href="#" class="card-link">Site Empresa</a>
             </div>
             <div v-if="ownProfile" class="d-flex flex-column">
-              <base-button round icon type="warning">
-                <router-link :to="{ hash: '#editProfile' }"
-                  ><i class="tim-icons icon-pencil text-white"></i
-                ></router-link>
+              <base-button round icon type="warning" @click="toggleEdit(); modals.newCareer = true">
+                <i class="tim-icons icon-pencil text-white"></i
+                >
               </base-button>
               <base-button round icon type="danger">
-                <router-link :to="{ hash: '#editProfile' }"
-                  ><i class="tim-icons icon-trash-simple text-white"></i
-                ></router-link>
+                <i class="tim-icons icon-trash-simple text-white"></i
+                >
               </base-button>
             </div>
           </div>
@@ -93,15 +89,95 @@
     <div class="col-md-12" v-if="ownProfile" id="editProfile">
       <edit-profile-form :model="model"> </edit-profile-form>
     </div>
+    <modal :show.sync="modals.newCareer">
+     <template slot="header">
+        <h5 class="modal-title" id="exampleModalLabel" v-if="!editModal">Add job</h5>
+        <h5 class="modal-title" id="exampleModalLabel" v-else>Edit job</h5>
+     </template>
+     <div>
+      <base-input label="Company">
+        <select class="form-control" id="exampleFormControlSelect1">
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+        </select>
+      </base-input>
+      <base-input label="Role"
+                  type="text"
+                  placeholder="Enter role">
+      </base-input>
+      <div class="d-flex justify-content-center">
+        <base-input class="col-md-4" label="First Year"
+                  type="number"
+                  placeholder="YYYY">
+      </base-input>
+      <base-input class="col-md-4" label="Last Year"
+                  type="number"
+                  placeholder="YYYY">
+      </base-input>
+      </div>
+     </div>
+     <template slot="footer">
+         <base-button type="secondary" @click="modals.newCareer = false">Close</base-button>
+         <base-button type="primary" v-if="!editModal">Add</base-button>
+        <base-button v-else type="primary">Save changes</base-button>
+     </template>
+   </modal>
+
+   <modal :show.sync="modals.newAcademic">
+     <template slot="header">
+        <h5 class="modal-title" id="exampleModalLabel" v-if="!editModal">Add degree</h5>
+        <h5 class="modal-title" id="exampleModalLabel" v-else>Edit degree</h5>
+     </template>
+     <div>
+      <base-input label="Institution">
+        <select class="form-control" id="exampleFormControlSelect1">
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+        </select>
+      </base-input>
+      <base-input label="Degree">
+        <select class="form-control" id="exampleFormControlSelect1">
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+        </select>
+      </base-input>
+      <div class="d-flex justify-content-center">
+        <base-input class="col-md-4" label="First Year"
+                  type="number"
+                  placeholder="YYYY">
+      </base-input>
+      <base-input class="col-md-4" label="Last Year"
+                  type="number"
+                  placeholder="YYYY">
+      </base-input>
+      </div>
+     </div>
+     <template slot="footer">
+         <base-button type="secondary" @click="modals.newAcademic = false">Close</base-button>
+         <base-button type="primary" v-if="!editModal">Add</base-button>
+        <base-button v-else type="primary">Save changes</base-button>
+     </template>
+   </modal>
   </div>
 </template>
 <script>
 import EditProfileForm from "./Profile/EditProfileForm";
 import UserCard from "./Profile/UserCard";
+import Modal from "../components/Modal"
 export default {
   components: {
     EditProfileForm,
     UserCard,
+    Modal,
   },
   data() {
     return {
@@ -126,6 +202,11 @@ export default {
       ownProfile: true,
       showAcademic: true,
       showCareer: true,
+      modals: {
+        newCareer: false,
+        newAcademic: false
+      },
+      edit: true
     };
   },
   computed: {
@@ -140,6 +221,17 @@ export default {
         return "col-md-6";
       }
       return "col-md-12";
+    },
+    editModal () {
+      return this.edit
+    }
+  },
+  methods: {
+    toggleEdit() {
+      this.edit = true
+    },
+    toggleAdd() {
+      this.edit = false
     },
   },
 };
