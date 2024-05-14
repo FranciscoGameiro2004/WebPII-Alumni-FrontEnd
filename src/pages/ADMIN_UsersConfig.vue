@@ -37,7 +37,7 @@
           </td>
           <td class="td-actions text-right">
             <base-button type="info" size="sm" icon>
-              <i class="tim-icons icon-single-02"></i>
+              <router-link :to="{name: 'profile', params: {id: row.id}}"><i class="tim-icons icon-single-02 text-white"></i></router-link>
             </base-button>
             <base-button type="warning" size="sm" v-if="!row.restricted" icon>
               <i class="tim-icons icon-lock-circle"></i>

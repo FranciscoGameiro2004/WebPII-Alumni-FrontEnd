@@ -46,12 +46,12 @@ const routes = [
       },
       {
         path: "profile",
-        name: "profile",
+        name: "TestProfile",
         component: Profile,
       },
       {
         path: "profile/:id",
-        name: "myProfile",
+        name: "profile",
         component: Profile,
       },
       {
