@@ -25,7 +25,7 @@
           </base-input>
         </div>
   
-        <card class="d-flex flex-row col-md-6">
+        <card class="d-flex flex-row col-md-6"  body-classes="p-0">
           <img
             slot="image"
             class=""
@@ -73,8 +73,12 @@
         </card>
       </card>
   
-      <modal :show.sync="modals.newCompany">
-        <template slot="header">
+      <modal :show.sync="modals.newCompany" body-classes="p-0">
+        <card type="secondary"
+                  header-classes="bg-white pb-5"
+                  body-classes="px-lg-5 py-lg-5"
+                  class="border-0 mb-0">
+        <template>
           <h5 class="modal-title" id="exampleModalLabel" v-if="!edit">
             Add company
           </h5>
@@ -133,6 +137,7 @@
           <base-button type="primary" v-if="!edit">Add</base-button>
           <base-button v-else type="primary">Save changes</base-button>
         </template>
+      </card>
       </modal>
     </div>
   </template>

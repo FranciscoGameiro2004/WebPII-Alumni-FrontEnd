@@ -122,9 +122,13 @@ export default {
 
     </card>
 
-    <modal :show.sync="modals.newInstitution">
-      <template slot="header">
-        <h5 class="modal-title" id="exampleModalLabel" v-if="!edit">
+    <modal :show.sync="modals.newInstitution" body-classes="p-0">
+      <card type="secondary"
+                  header-classes="bg-white pb-5"
+                  body-classes="px-lg-5 py-lg-5"
+                  class="border-0 mb-0">
+      <template>
+        <h5 class="modal-title text-black" id="exampleModalLabel" v-if="!edit">
           Add Institution
         </h5>
         <h5 class="modal-title" id="exampleModalLabel" v-else>Edit Institution</h5>
@@ -182,6 +186,7 @@ export default {
         <base-button type="primary" v-if="!edit">Add</base-button>
         <base-button v-else type="primary">Save changes</base-button>
       </template>
+    </card>
     </modal>
   </div>
 </template>

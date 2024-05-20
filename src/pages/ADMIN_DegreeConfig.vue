@@ -75,8 +75,12 @@
       </card>
     </card>
 
-    <modal :show.sync="modals.newDegree">
-      <template slot="header">
+    <modal :show.sync="modals.newDegree"  body-classes="p-0">
+      <card type="secondary"
+                  header-classes="bg-white pb-5"
+                  body-classes="px-lg-5 py-lg-5"
+                  class="border-0 mb-0">
+      <template>
         <h5 class="modal-title" id="exampleModalLabel" v-if="!edit">
           Add degree
         </h5>
@@ -115,6 +119,7 @@
         <base-button type="primary" v-if="!edit">Add</base-button>
         <base-button v-else type="primary">Save changes</base-button>
       </template>
+    </card>
     </modal>
   </div>
 </template>
