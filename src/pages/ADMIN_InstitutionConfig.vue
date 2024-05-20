@@ -1,3 +1,34 @@
+<script>
+import Modal from "../components/Modal";
+import { useInstitutionsStore } from "../stores/institutions";
+
+export default {
+  components: {
+    Modal,
+  },
+
+  data() {
+    return {
+      institutionStore: useInstitutionsStore(),
+      modals: {
+        newInstitution: false,
+      },
+      edit: false,
+    };
+  },
+  methods: {
+    toggleEdit() {
+      this.edit = true;
+    },
+    toggleAdd() {
+      this.edit = false;
+      this.modals.newInstitution = true;
+    },
+  },
+};
+
+</script>
+
 <template>
   <div>
     <card>
@@ -7,11 +38,10 @@
           round
           icon
           type="default"
-          @click="
-            toggleAdd();
-            modals.newInstitution = true;
+          @click="toggleAdd();
+          modals.newInstitution = true;
           "
-        >
+          >
           <i class="tim-icons icon-simple-add text-white"></i>
         </base-button>
       </div>
@@ -25,52 +55,19 @@
         </base-input>
       </div>
 
-      <card class="d-flex flex-row col-md-6">
-        <img
-          slot="image"
-          class=""
-          src="https://placehold.co/240"
-          alt="Card image cap"
-          height="115px"
-          width="115px"
-        />
-        <div class="d-flex justify-content-between">
-          <div>
-            <h4 class="card-title">
-              Institution Name
-            </h4>
-            <h5 class="card-subtitle mb-2">
-              <i class="tim-icons icon-square-pin text-white"></i> 
-              Address Road 15 1111-111, Locality
-            </h5>
-            <h5 class="card-subtitle mb-2">
-              <i class="tim-icons icon-tablet-2 text-white"></i> 
-              912345678
-            </h5>
-            <h5 class="card-subtitle mb-2">
-              <i class="tim-icons icon-email-85 text-white"></i> 
-              institution@institution.org
-            </h5>
-            <a href="#" class="card-link">Institution Website</a>
-          </div>
-          <div class="d-flex flex-column">
-            <base-button
-              round
-              icon
-              type="warning"
-              @click="
-                toggleEdit();
-                modals.newInstitution = true;
-              "
-            >
-              <i class="tim-icons icon-pencil text-white"></i>
-            </base-button>
-            <base-button round icon type="danger">
-              <i class="tim-icons icon-trash-simple text-white"></i>
-            </base-button>
-          </div>
+      <!--
+      <div>
+        <div v-if="institutions.length">
+        <ul>
+          <li v-for="institution in institutions" :key="institution.id">{{ institution.name }}</li>
+        </ul>
+      </div>
+        <div v-else>
+          <p>No institutions available.</p>
         </div>
-      </card>
+      </div>
+      -->
+
     </card>
 
     <modal :show.sync="modals.newInstitution">
@@ -136,30 +133,5 @@
     </modal>
   </div>
 </template>
-
-<script>
-import Modal from "../components/Modal"
-export default {
-  components: {
-    Modal,
-  },
-  data() {
-    return {
-      modals: {
-        newInstitution: false,
-      },
-      edit: false
-    };
-  },
-  methods: {
-    toggleEdit() {
-      this.edit = true
-    },
-    toggleAdd() {
-      this.edit = false
-    },
-  },
-};
-</script>
 
 <style></style>

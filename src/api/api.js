@@ -1,8 +1,3 @@
-import fetchMock from "fetch-mock";
-import games from './mocks/mocks' //TODO: REVERTER DEPOIS PARA O FICHEIRO MOCKS ORIGINAL DEPOIS DE O MODIFICAR
-
-fetchMock.mock('http://localhost:5174/games', games)
-
 /**
  * GET utility function
  * @param {string} apiBaseUrl - this is the base URL from the API
@@ -10,10 +5,12 @@ fetchMock.mock('http://localhost:5174/games', games)
  * @returns a promise object with the response
  */
 export async function get(apiBaseUrl, endPoint){
+    console.log(apiBaseUrl + "/" + endPoint)
     try {
-        const response = await fetch(`${apiBaseUrl}/${endPoint}`)
+        const response = await fetch(`${apiBaseUrl}/${endPoint}`);console.log(response)
         return handleResponse(response)
     } catch (error) {
+        console.log("error on GET")
         throw error
     }
 }
