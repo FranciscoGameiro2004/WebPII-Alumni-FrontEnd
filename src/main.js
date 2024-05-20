@@ -25,7 +25,7 @@ import "./registerServiceWorker";
 Vue.use(BlackDashboard);
 Vue.use(VueRouter);
 Vue.use(RouterPrefetch);
-Vue.use(createPinia)
+Vue.use(createPinia())
 new Vue({
   router,
   i18n,
