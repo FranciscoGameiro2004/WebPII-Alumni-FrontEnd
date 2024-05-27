@@ -67,52 +67,52 @@ export default {
       
       <div>
         <div v-if="institutionsList.length">
-        <card class="d-flex flex-row col-md-6" v-for="institution in institutionsList" :key="institution.id">
-        <img
-          slot="image"
-          class=""
-          :src="institution.logoUrl"
-          :alt="institution.designation"
-          height="115px"
-          width="115px"
-        />
-        <div class="d-flex justify-content-between">
-          <div>
-            <h4 class="card-title">
-              {{ institution.designation }}
-            </h4>
-            <h5 class="card-subtitle mb-2" v-if="institution.address">
-              <i class="tim-icons icon-square-pin text-white"></i> 
-              {{ institution.address }}
-            </h5>
-            <h5 class="card-subtitle mb-2" v-if="institution.phoneNumber">
-              <i class="tim-icons icon-tablet-2 text-white"></i> 
-              {{ institution.phoneNumber }}
-            </h5>
-            <h5 class="card-subtitle mb-2" v-if="institution.email">
-              <i class="tim-icons icon-email-85 text-white"></i> 
-              {{ institution.email }}
-            </h5>
-            <a :href="institution.url" class="card-link" v-if="institution.url">Institution Website</a>
+          <card class="d-flex flex-row col-md-6" v-for="institution in institutionsList" :key="institution.id">
+          <img
+            slot="image"
+            class=""
+            :src="institution.logoUrl"
+            :alt="institution.designation"
+            height="115px"
+            width="115px"
+          />
+          <div class="d-flex justify-content-between">
+            <div>
+              <h4 class="card-title">
+                {{ institution.designation }}
+              </h4>
+              <h5 class="card-subtitle mb-2" v-if="institution.address">
+                <i class="tim-icons icon-square-pin text-white"></i> 
+                {{ institution.address }}
+              </h5>
+              <h5 class="card-subtitle mb-2" v-if="institution.phoneNumber">
+                <i class="tim-icons icon-tablet-2 text-white"></i> 
+                {{ institution.phoneNumber }}
+              </h5>
+              <h5 class="card-subtitle mb-2" v-if="institution.email">
+                <i class="tim-icons icon-email-85 text-white"></i> 
+                {{ institution.email }}
+              </h5>
+              <a :href="institution.url" class="card-link" v-if="institution.url">Institution Website</a>
+            </div>
+            <div class="d-flex flex-column">
+              <base-button
+                round
+                icon
+                type="warning"
+                @click="
+                  toggleEdit();
+                  modals.newInstitution = true;
+                "
+              >
+                <i class="tim-icons icon-pencil text-white"></i>
+              </base-button>
+              <base-button round icon type="danger">
+                <i class="tim-icons icon-trash-simple text-white"></i>
+              </base-button>
+            </div>
           </div>
-          <div class="d-flex flex-column">
-            <base-button
-              round
-              icon
-              type="warning"
-              @click="
-                toggleEdit();
-                modals.newInstitution = true;
-              "
-            >
-              <i class="tim-icons icon-pencil text-white"></i>
-            </base-button>
-            <base-button round icon type="danger">
-              <i class="tim-icons icon-trash-simple text-white"></i>
-            </base-button>
-          </div>
-        </div>
-      </card>
+        </card>
       </div>
         <div v-else>
           <p>No institutions available.</p>
