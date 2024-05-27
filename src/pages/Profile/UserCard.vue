@@ -8,20 +8,21 @@
       <div class="block block-four"></div>
       <a href="#">
         <img class="avatar" src="img/anime6.png" alt="..." />
-        <h5 class="title">{{ user.fullName }}</h5>
+        <h5 class="title">{{ user.name }}</h5>
+        <h6 class="title">{{ user.username }}</h6>
       </a>
       <p class="description">
         {{ user.title }}
       </p>
       <p class="description">
-        <b>LVL {{ user.level }}</b>
+        <!-- <b>LVL {{ user.level }}</b> -->
       </p>
     </div>
     <p></p>
-    <div v-if="!ownProfile" class="d-flex justify-content-center">
+    <!-- <div v-if="!ownProfile" class="d-flex justify-content-center">
       <base-button type="primary" v-if="!user.following">Follow</base-button>
       <base-button simple type="primary" v-else>Unfollow</base-button>
-    </div>
+    </div> -->
     <div slot="footer" class="button-container">
       <base-button icon round class="btn-facebook">
         <i class="fab fa-facebook"></i>

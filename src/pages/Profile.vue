@@ -1,10 +1,10 @@
 <template>
   <div class="row">
     <div class="col-md-12">
-      <user-card :user="user" :ownProfile="ownProfile"></user-card>
+      <user-card :user="userInfo" :ownProfile="ownProfile"></user-card>
     </div>
-    <div :class="classShow" v-if="showAcademic">
-      <card>
+    <div :class="classShow" v-if="userInfo.degrees">
+      <card v-for="degree of userInfo.degrees" :key="degree.degree">
         <div class="d-flex justify-content-between">
           <h4 class="card-title">Academic</h4>
           <base-button round icon type="default" v-if="ownProfile" @click="toggleAdd(); modals.newAcademic = true">
@@ -24,12 +24,12 @@
             <div>
               <h6 class="card-subtitle text-muted mb-0">Licenciatura em</h6>
               <h4 class="card-title">
-                Tecnologias e Sistemas de Informação para a Web
+                {{ degree.degree }}
               </h4>
-              <h5 class="card-subtitle mb-2">
+              <!-- <h5 class="card-subtitle mb-2">
                 Escola Superior de Media Artes e Design
-              </h5>
-              <h6 class="card-subtitle mb-2 text-muted">2022 - (presente)</h6>
+              </h5> -->
+              <h6 class="card-subtitle mb-2 text-muted">{{ degree.firstYear }} - {{ degree.lastYear ? degree.lastYear : '(presente)' }}</h6>
               <a href="#" class="card-link">Site Instituição</a>
             </div>
             <div v-if="ownProfile" class="d-flex flex-column">
@@ -47,8 +47,8 @@
       </card>
     </div>
 
-    <div :class="classShow" v-if="showCareer">
-      <card>
+    <div :class="classShow" v-if="userInfo.jobs">
+      <card v-for="job of userInfo.jobs" :key="job.role">
         <div class="d-flex justify-content-between">
           <h4 class="card-title">Professional Career</h4>
           <base-button round icon type="default" @click="toggleAdd(); modals.newCareer = true" v-if="ownProfile">
@@ -173,6 +173,7 @@
 import EditProfileForm from "./Profile/EditProfileForm";
 import UserCard from "./Profile/UserCard";
 import Modal from "../components/Modal"
+import {useUsersStore} from '@/stores/users'
 export default {
   components: {
     EditProfileForm,
@@ -181,6 +182,7 @@ export default {
   },
   data() {
     return {
+      usersStore: useUsersStore(),
       model: {
         company: "Creative Code Inc.",
         email: "mike@email.com",
@@ -199,7 +201,7 @@ export default {
         following: false,
         level: 69,
       },
-      ownProfile: true,
+      ownProfile: false,
       showAcademic: true,
       showCareer: true,
       modals: {
@@ -224,6 +226,12 @@ export default {
     },
     editModal () {
       return this.edit
+    },
+    profileId(){
+      return this.$route.params.id
+    },
+    userInfo(){
+      return this.usersStore.getUser
     }
   },
   methods: {
@@ -233,6 +241,9 @@ export default {
     toggleAdd() {
       this.edit = false
     },
+  },
+  mounted () {
+    this.usersStore.fetchUserById(this.profileId)
   },
 };
 </script>
