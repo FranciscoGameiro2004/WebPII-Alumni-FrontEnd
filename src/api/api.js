@@ -7,7 +7,7 @@
 export async function get(apiBaseUrl, endPoint){
     console.log(apiBaseUrl + "/" + endPoint)
     try {
-        const response = await fetch(`${apiBaseUrl}/${endPoint}`);console.log(response)
+        const response = await fetch(`${apiBaseUrl}/${endPoint}`);console.table(response)
         return handleResponse(response)
     } catch (error) {
         console.log("error on GET")
