@@ -40,6 +40,7 @@
     </div>
   </div>
 </template>
+
 <script>
 import SidebarLink from "./SidebarLink";
 

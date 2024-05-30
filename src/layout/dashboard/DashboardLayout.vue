@@ -33,6 +33,12 @@
           icon="tim-icons icon-single-02"
           
         />
+        <sidebar-link
+          to="/admin/events"
+          name="Events"
+          icon="tim-icons icon-single-02"
+          
+        />
         <hr>
       </div>
         <div v-if="showTemplatePages">

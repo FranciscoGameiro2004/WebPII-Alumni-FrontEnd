@@ -33,6 +33,9 @@ const CompanyConfig = () =>
 const UserConfig = () =>
   import(/* webpackChunkName: "common" */ "@/pages/ADMIN_UsersConfig.vue")
 
+const EventConfig = () =>
+  import(/* webpackChunkName: "common" */ "@/pages/ADMIN_EventsConfig.vue")
+
 const routes = [
   {
     path: "/",
@@ -118,6 +121,14 @@ const routes = [
         path: "admin/company",
         name: "companyConfig",
         component: CompanyConfig,
+        meta: {
+          adminRequired: true
+        }
+      },
+      {
+        path: "admin/event",
+        name: "eventConfig",
+        component: EventConfig,
         meta: {
           adminRequired: true
         }
