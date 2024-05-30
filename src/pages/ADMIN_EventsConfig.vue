@@ -67,7 +67,7 @@ export default {
       
       <div>
         <div v-if="eventsList.length">
-          <card class="d-flex flex-row col-md-6" v-for="event in EventsList" :key="event.id">
+          <card class="d-flex flex-row col-md-6" v-for="event in eventsList" :key="event.id">
           <img
             slot="image"
             class=""

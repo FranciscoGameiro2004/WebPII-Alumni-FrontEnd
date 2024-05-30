@@ -34,7 +34,7 @@
           
         />
         <sidebar-link
-          to="/admin/events"
+          to="/admin/event"
           name="Events"
           icon="tim-icons icon-single-02"
           
