@@ -1,3 +1,46 @@
+<script>
+import BaseTable from "../components/BaseTable";
+export default {
+  data() {
+    return {
+      modals: {
+        newInstitution: false,
+      },
+      edit: false,
+      tableData: [
+        {
+          id: 1,
+          name: "	Andrew Mike",
+          level: "10",
+          job: "Develop",
+          type: "Normal",
+          restricted: true
+        },
+        {
+          id: 2,
+          name: "	John Doe",
+          level: "20",
+          job: "Design",
+          type: "Admin",
+          restricted: false
+        },
+      ],
+    };
+  },
+  methods: {
+    toggleEdit() {
+      this.edit = true;
+    },
+    toggleAdd() {
+      this.edit = false;
+    },
+  },
+  components: {
+    BaseTable
+  }
+};
+</script>
+
 <template>
   <div>
     <card>
@@ -54,48 +97,5 @@
     </card>
   </div>
 </template>
-
-<script>
-import BaseTable from "../components/BaseTable";
-export default {
-  data() {
-    return {
-      modals: {
-        newInstitution: false,
-      },
-      edit: false,
-      tableData: [
-        {
-          id: 1,
-          name: "	Andrew Mike",
-          level: "10",
-          job: "Develop",
-          type: "Normal",
-          restricted: true
-        },
-        {
-          id: 2,
-          name: "	John Doe",
-          level: "20",
-          job: "Design",
-          type: "Admin",
-          restricted: false
-        },
-      ],
-    };
-  },
-  methods: {
-    toggleEdit() {
-      this.edit = true;
-    },
-    toggleAdd() {
-      this.edit = false;
-    },
-  },
-  components: {
-    BaseTable
-  }
-};
-</script>
 
 <style></style>
