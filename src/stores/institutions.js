@@ -12,11 +12,11 @@ export const useInstitutionsStore = defineStore('institution', {
     getInstitutions: (state) => state.institutions
   },
   actions: {
-    async fetchInstitutions() {
+    async fetchInstitutions(page=0, limit=5) {
       console.log('Fetching institutions');
       try {
-        const data = await api.get(INSTITUTION_BASE_URL, resources);console.log(data);
-        this.institutions = data; // Armazena os dados no estado
+        const data = await api.get(INSTITUTION_BASE_URL, `${resources}?limit=${limit}&page=${page}`);console.log(data);
+        this.institutions = data; console.log(this.institutions) // Armazena os dados no estado
       } catch (error) {
         console.error('Error fetching institutions:', error);
         throw error;

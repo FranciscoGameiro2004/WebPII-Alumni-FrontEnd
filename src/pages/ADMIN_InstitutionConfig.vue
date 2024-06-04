@@ -18,8 +18,8 @@ export default {
   },
   computed: {
     institutionsList() {
-      return this.institutionStore.getInstitutions
-    }
+      return this.institutionStore.getInstitutions.data
+    },
   },
   methods: {
     toggleEdit() {
@@ -31,7 +31,7 @@ export default {
     },
   },
   mounted () {
-    this.institutionStore.fetchInstitutions()
+    this.institutionStore.fetchInstitutions(0,5);
   },
 };
 
