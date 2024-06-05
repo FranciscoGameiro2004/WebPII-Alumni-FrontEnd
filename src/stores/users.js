@@ -22,6 +22,7 @@ export const useUsersStore = defineStore('user', {
       console.log('Fetching users');
       try {
         const data = await api.get(USERS_BASE_URL, `users`);console.log(data);
+        data = data.filter(user => user.type != "admin")
         this.users = data; // Armazena os dados no estado
       } catch (error) {
         console.error('Error fetching users:', error);

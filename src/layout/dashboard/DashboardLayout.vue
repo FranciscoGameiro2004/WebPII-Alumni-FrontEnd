@@ -28,14 +28,14 @@
           
         />
         <sidebar-link
-          to="/admin/user"
-          name="Users"
-          icon="tim-icons icon-single-02"
+          to="/admin/event"
+          name="Events"
+          icon="tim-icons icon-calendar-60"
           
         />
         <sidebar-link
-          to="/admin/event"
-          name="Events"
+          to="/admin/user"
+          name="Users"
           icon="tim-icons icon-single-02"
           
         />
