@@ -31,7 +31,7 @@ export default {
     },
   },
   mounted () {
-    this.institutionStore.fetchInstitutions(0,5);
+    this.institutionStore.fetchInstitutions(0,2);
   },
 };
 
@@ -60,6 +60,16 @@ export default {
           placeholder="Search"
           class="col-md-6"
         >
+        </base-input>
+        <base-input label="Pagina" class="col-md-6">
+          <select class="form-control" id="exampleFormControlSelect1">
+            <option value="">Select</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+          </select>
         </base-input>
       </div>
 
@@ -118,9 +128,10 @@ export default {
           <p>No institutions available.</p>
         </div>
       </div>
-      
-
     </card>
+
+    //pagination.sync
+
 
     <modal :show.sync="modals.newInstitution" body-classes="p-0">
       <card type="secondary"
