@@ -13,9 +13,9 @@ export default {
       modals: {
         newInstitution: false,
       },
-      edit: false,
+      edit: false, institutionEdit:{},
       currentPage: 1,
-      itemsPerPage: 5,
+      itemsPerPage: 2,
     };
   },
   computed: {
@@ -27,7 +27,8 @@ export default {
     },
   },
   methods: {
-    toggleEdit() {
+    toggleEdit(data) {
+      this.institutionEdit = data;
       this.edit = true;
     },
     toggleAdd() {
@@ -47,7 +48,31 @@ export default {
     async fetchData(page, limit) {
       try {
         await this.institutionStore.fetchInstitutions(page, limit);
-      } catch (error) {
+      } 
+      catch (error) {
+        console.error('Failed to fetch institutions:', error);
+      }
+    },
+    async teste() {
+      /*
+      console.log(this.institutionEdit.designation);
+      console.log(this.institutionEdit.phoneNumber);
+      console.log(this.institutionEdit.email);
+      console.log(this.institutionEdit.url);
+      console.log(this.institutionEdit.address);
+      */
+      let data = {
+        "designation": this.institutionEdit.designation,
+        "phoneNumber": this.institutionEdit.phoneNumber,
+        "email": this.institutionEdit.email,
+        "url": this.institutionEdit.url,
+        "address": this.institutionEdit.address
+      }; //console.log(data);
+
+      try {
+        await this.institutionStore.updateInstitution(this.institutionEdit.id, data)
+      }
+      catch (error) {
         console.error('Failed to fetch institutions:', error);
       }
     },
@@ -62,13 +87,14 @@ export default {
   },
   mounted() {
     this.fetchData(this.currentPage - 1, this.itemsPerPage);  // Ajusta o índice da página para começar em 0
-  },
-};
+  }
+}
 </script>
 
 <template>
   <div>
     <card>
+      <!------------------------------------------------->
       <div class="d-flex justify-content-between">
         <h4 class="card-title">Institutions</h4>
         <base-button
@@ -81,6 +107,7 @@ export default {
           <i class="tim-icons icon-simple-add text-white"></i>
         </base-button>
       </div>
+      <!------------------------------------------------->
       <div class="d-flex justify-content-between">
         <base-input
           type="text"
@@ -97,7 +124,7 @@ export default {
           </select>
         </base-input>
       </div>
-
+      <!------------------------------------------------->
       <div>
         <div v-if="institutionsList.length">
           <div class="row">
@@ -132,7 +159,7 @@ export default {
                     icon
                     type="warning"
                     @click="
-                      toggleEdit();
+                      toggleEdit( institution );
                       modals.newInstitution = true;
                     "
                   >
@@ -165,28 +192,43 @@ export default {
             body-classes="px-lg-5 py-lg-5"
             class="border-0 mb-0">
         <template>
+
           <h5 class="modal-title text-black" id="exampleModalLabel" v-if="!edit">
             Add Institution
           </h5>
-          <h5 class="modal-title" id="exampleModalLabel" v-else>Edit Institution</h5>
+          <h5 class="modal-title" id="exampleModalLabel" v-else>Edit Institution | id:{{ institutionEdit.id }}</h5>
         </template>
-        <div>
+
+        <div  v-if="!edit">
           <base-input type="text" label="Institution Name"></base-input>
           <base-input type="number" label="Phone Number"></base-input>
           <base-input type="email" label="Email"></base-input>
           <base-input type="url" label="Website"></base-input>
           <base-input type="text" label="Address"></base-input>
-          <base-input type="text" label="Zip Code" placeholder="1111-111" class="col-md-6"></base-input>
           <label for="" class="control-label">Image</label>
           <br>
           <img slot="image" src="https://placehold.co/240" alt="Card image cap" height="115px" width="115px"/>
           <br>
           <input type="file">
         </div>
+
+        <div  v-else>
+          <base-input type="text" label="Institution Name" :value="institutionEdit.designation"></base-input>
+          <base-input type="number" label="Phone Number" :value="institutionEdit.phoneNumber"></base-input>
+          <base-input type="email" label="Email" :value="institutionEdit.email"></base-input>
+          <base-input type="url" label="Website" :value="institutionEdit.url"></base-input>
+          <base-input type="text" label="Address" :value="institutionEdit.address"></base-input>
+          <label for="" class="control-label">Image</label>
+          <br>
+          <img slot="image" src="https://placehold.co/240" alt="Card image cap" height="115px" width="115px"/>
+          <br>
+          <input type="file">
+        </div>
+        
         <template slot="footer">
           <base-button type="secondary" @click="modals.newInstitution = false">Close</base-button>
           <base-button type="primary" v-if="!edit">Add</base-button>
-          <base-button v-else type="primary">Save changes</base-button>
+          <base-button v-else type="primary" @click="teste">Save changes</base-button>
         </template>
       </card>
     </modal>
