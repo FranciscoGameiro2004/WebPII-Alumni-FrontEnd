@@ -14,11 +14,16 @@ export default {
         newInstitution: false,
       },
       edit: false,
+      currentPage: 1,
+      itemsPerPage: 5,
     };
   },
   computed: {
     institutionsList() {
-      return this.institutionStore.getInstitutions.data
+      return this.institutionStore.getInstitutions.data;
+    },
+    totalPages() {
+      return Math.ceil(this.institutionStore.getInstitutions.pagination.total / this.itemsPerPage);
     },
   },
   methods: {
@@ -29,12 +34,36 @@ export default {
       this.edit = false;
       this.modals.newInstitution = true;
     },
+    nextPage() {
+      if (this.currentPage < this.totalPages) {
+        this.currentPage++;
+      }
+    },
+    prevPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+      }
+    },
+    async fetchData(page, limit) {
+      try {
+        await this.institutionStore.fetchInstitutions(page, limit);
+      } catch (error) {
+        console.error('Failed to fetch institutions:', error);
+      }
+    },
   },
-  mounted () {
-    this.institutionStore.fetchInstitutions(0,2);
+  watch: {
+    currentPage(newPage) {
+      this.fetchData(newPage - 1, this.itemsPerPage);  // Ajusta o índice da página para começar em 0
+    },
+    itemsPerPage(newLimit) {
+      this.fetchData(this.currentPage - 1, newLimit);  // Ajusta o índice da página para começar em 0
+    }
+  },
+  mounted() {
+    this.fetchData(this.currentPage - 1, this.itemsPerPage);  // Ajusta o índice da página para começar em 0
   },
 };
-
 </script>
 
 <template>
@@ -47,9 +76,8 @@ export default {
           icon
           type="default"
           @click="toggleAdd();
-          modals.newInstitution = true;
-          "
-          >
+          modals.newInstitution = true;"
+        >
           <i class="tim-icons icon-simple-add text-white"></i>
         </base-button>
       </div>
@@ -61,145 +89,134 @@ export default {
           class="col-md-6"
         >
         </base-input>
-        <base-input label="Pagina" class="col-md-6">
-          <select class="form-control" id="exampleFormControlSelect1">
-            <option value="">Select</option>
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
+        <base-input label="Items per Page" class="col-md-6">
+          <select class="form-control" v-model="itemsPerPage">
+            <option :value="4">4</option>
+            <option :value="8">8</option>
           </select>
         </base-input>
       </div>
 
-      
-      
       <div>
         <div v-if="institutionsList.length">
-          <card class="d-flex flex-row col-md-6" v-for="institution in institutionsList" :key="institution.id">
-          <img
-            slot="image"
-            class=""
-            :src="institution.logoUrl"
-            :alt="institution.designation"
-            height="115px"
-            width="115px"
-          />
-          <div class="d-flex justify-content-between">
-            <div>
-              <h4 class="card-title">
-                {{ institution.designation }}
-              </h4>
-              <h5 class="card-subtitle mb-2" v-if="institution.address">
-                <i class="tim-icons icon-square-pin text-white"></i> 
-                {{ institution.address }}
-              </h5>
-              <h5 class="card-subtitle mb-2" v-if="institution.phoneNumber">
-                <i class="tim-icons icon-tablet-2 text-white"></i> 
-                {{ institution.phoneNumber }}
-              </h5>
-              <h5 class="card-subtitle mb-2" v-if="institution.email">
-                <i class="tim-icons icon-email-85 text-white"></i> 
-                {{ institution.email }}
-              </h5>
-              <a :href="institution.url" class="card-link" v-if="institution.url">Institution Website</a>
-            </div>
-            <div class="d-flex flex-column">
-              <base-button
-                round
-                icon
-                type="warning"
-                @click="
-                  toggleEdit();
-                  modals.newInstitution = true;
-                "
-              >
-                <i class="tim-icons icon-pencil text-white"></i>
-              </base-button>
-              <base-button round icon type="danger">
-                <i class="tim-icons icon-trash-simple text-white"></i>
-              </base-button>
+          <div class="row">
+            <div class="col-md-6" v-for="institution in institutionsList" :key="institution.id">
+              <card class="d-flex flex-column">
+                <img
+                  slot="image"
+                  :src="institution.logoUrl"
+                  :alt="institution.designation"
+                  height="115px"
+                  width="115px"
+                />
+                <div>
+                  <h4 class="card-title">{{ institution.designation }}</h4>
+                  <h5 class="card-subtitle mb-2" v-if="institution.address">
+                    <i class="tim-icons icon-square-pin text-white"></i> 
+                    {{ institution.address }}
+                  </h5>
+                  <h5 class="card-subtitle mb-2" v-if="institution.phoneNumber">
+                    <i class="tim-icons icon-tablet-2 text-white"></i> 
+                    {{ institution.phoneNumber }}
+                  </h5>
+                  <h5 class="card-subtitle mb-2" v-if="institution.email">
+                    <i class="tim-icons icon-email-85 text-white"></i> 
+                    {{ institution.email }}
+                  </h5>
+                  <a :href="institution.url" class="card-link" v-if="institution.url">Institution Website</a>
+                </div>
+                <div class="d-flex flex-column mt-2">
+                  <base-button
+                    round
+                    icon
+                    type="warning"
+                    @click="
+                      toggleEdit();
+                      modals.newInstitution = true;
+                    "
+                  >
+                    <i class="tim-icons icon-pencil text-white"></i>
+                  </base-button>
+                  <base-button round icon type="danger">
+                    <i class="tim-icons icon-trash-simple text-white"></i>
+                  </base-button>
+                </div>
+              </card>
             </div>
           </div>
-        </card>
-      </div>
+        </div>
         <div v-else>
           <p>No institutions available.</p>
         </div>
       </div>
+
+      <!-- Pagination -->
+      <div class="pagination-container">
+        <button class="pagination-button" @click="prevPage" :disabled="currentPage === 1">Anterior</button>
+        <span class="pagination-info">Página {{ currentPage }} de {{ totalPages }}</span>
+        <button class="pagination-button" @click="nextPage" :disabled="currentPage === totalPages">Próxima</button>
+      </div>
     </card>
-
-    //pagination.sync
-
 
     <modal :show.sync="modals.newInstitution" body-classes="p-0">
       <card type="secondary"
-                  header-classes="bg-white pb-5"
-                  body-classes="px-lg-5 py-lg-5"
-                  class="border-0 mb-0">
-      <template>
-        <h5 class="modal-title text-black" id="exampleModalLabel" v-if="!edit">
-          Add Institution
-        </h5>
-        <h5 class="modal-title" id="exampleModalLabel" v-else>Edit Institution</h5>
-      </template>
-      <div>
-        <base-input
-          type="text"
-          label="Institution Name"
-        >
-        </base-input>
-        <base-input
-          type="number"
-          label="Phone Number"
-        >
-        </base-input>
-        <base-input
-          type="email"
-          label="Email"
-        >
-        </base-input>
-        <base-input
-          type="url"
-          label="Website"
-        >
-        </base-input>
-        <base-input
-          type="text"
-          label="Address"
-        >
-        </base-input>
-        <base-input
-          type="text"
-          label="Zip Code"
-          placeholder="1111-111"
-          class="col-md-6"
-        >
-        </base-input>
-        <label for="" class="control-label">Image</label>
-        <br>
-        <img
-          slot="image"
-          class=""
-          src="https://placehold.co/240"
-          alt="Card image cap"
-          height="115px"
-          width="115px"
-        />
-        <br>
-        <input type="file">
-      </div>
-      <template slot="footer">
-        <base-button type="secondary" @click="modals.newInstitution = false"
-          >Close</base-button
-        >
-        <base-button type="primary" v-if="!edit">Add</base-button>
-        <base-button v-else type="primary">Save changes</base-button>
-      </template>
-    </card>
+            header-classes="bg-white pb-5"
+            body-classes="px-lg-5 py-lg-5"
+            class="border-0 mb-0">
+        <template>
+          <h5 class="modal-title text-black" id="exampleModalLabel" v-if="!edit">
+            Add Institution
+          </h5>
+          <h5 class="modal-title" id="exampleModalLabel" v-else>Edit Institution</h5>
+        </template>
+        <div>
+          <base-input type="text" label="Institution Name"></base-input>
+          <base-input type="number" label="Phone Number"></base-input>
+          <base-input type="email" label="Email"></base-input>
+          <base-input type="url" label="Website"></base-input>
+          <base-input type="text" label="Address"></base-input>
+          <base-input type="text" label="Zip Code" placeholder="1111-111" class="col-md-6"></base-input>
+          <label for="" class="control-label">Image</label>
+          <br>
+          <img slot="image" src="https://placehold.co/240" alt="Card image cap" height="115px" width="115px"/>
+          <br>
+          <input type="file">
+        </div>
+        <template slot="footer">
+          <base-button type="secondary" @click="modals.newInstitution = false">Close</base-button>
+          <base-button type="primary" v-if="!edit">Add</base-button>
+          <base-button v-else type="primary">Save changes</base-button>
+        </template>
+      </card>
     </modal>
   </div>
 </template>
 
-<style></style>
+<style>
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.pagination-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin: 0 5px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.pagination-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.pagination-info {
+  margin: 0 10px;
+  font-weight: bold;
+}
+</style>
