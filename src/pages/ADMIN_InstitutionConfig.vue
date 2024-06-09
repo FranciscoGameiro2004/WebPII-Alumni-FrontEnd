@@ -91,6 +91,7 @@ export default {
         </base-input>
         <base-input label="Items per Page" class="col-md-6">
           <select class="form-control" v-model="itemsPerPage">
+            <option :value="2">2</option>
             <option :value="4">4</option>
             <option :value="8">8</option>
           </select>
