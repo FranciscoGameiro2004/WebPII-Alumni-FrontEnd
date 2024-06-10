@@ -19,7 +19,7 @@ export default {
         password:  this.passInput
       }; //console.log(data)
 
-      await this.authStore.fetchToken(data)
+      //await this.authStore.fetchToken(data)
     }
   }
 }
