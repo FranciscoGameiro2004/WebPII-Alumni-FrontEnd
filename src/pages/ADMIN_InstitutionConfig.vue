@@ -53,7 +53,7 @@ export default {
         console.error('Failed to fetch institutions:', error);
       }
     },
-    async teste() {
+    async updateData() {
       /*
       console.log(this.institutionEdit.designation);
       console.log(this.institutionEdit.phoneNumber);

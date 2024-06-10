@@ -15,7 +15,7 @@ const router = new VueRouter({
 });
 
 // Nota: Variáveis temporárias
-const logged = true
+const logged = false
 const admin = true
 router.beforeEach((to, from, next) => {
   if (to.meta.alreadyAuth) {

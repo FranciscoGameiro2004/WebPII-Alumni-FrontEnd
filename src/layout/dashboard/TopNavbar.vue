@@ -1,3 +1,83 @@
+<script>
+import { CollapseTransition } from "vue2-transitions";
+import Modal from "@/components/Modal";
+
+export default {
+  components: {
+    CollapseTransition,
+    Modal,
+  },
+  computed: {
+    routeName() {
+      const { name } = this.$route;
+      return this.capitalizeFirstLetter(name);
+    },
+    isRTL() {
+      return this.$rtl.isRTL;
+    },
+    loggedIn() {
+      return this.session;
+    },
+    filteredUsers() {
+      const users = this.users.filter((user) =>
+        user.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+      return this.searchQuery !== "" ? users : [];
+    },
+  },
+  data() {
+    return {
+      activeNotifications: false,
+      showMenu: false,
+      searchModalVisible: false,
+      searchQuery: "",
+      session: false,
+      //! DUMMY USERS
+      users: [
+        {
+          id: 1,
+          name: "	Andrew Mike",
+          level: "10",
+          nameTag: "Develop",
+          type: "Normal",
+          restricted: true,
+          profilePicURL: 'https://placehold.co/240',
+        },
+        {
+          id: 2,
+          name: "	John Doe",
+          level: "20",
+          nameTag: "Design",
+          type: "Admin",
+          restricted: false,
+          profilePicURL: 'https://placehold.co/240',
+        },
+      ],
+    };
+  },
+  methods: {
+    capitalizeFirstLetter(string) {
+      return string.charAt(0).toUpperCase() + string.slice(1);
+    },
+    toggleNotificationDropDown() {
+      this.activeNotifications = !this.activeNotifications;
+    },
+    closeDropDown() {
+      this.activeNotifications = false;
+    },
+    toggleSidebar() {
+      this.$sidebar.displaySidebar(!this.$sidebar.showSidebar);
+    },
+    hideSidebar() {
+      this.$sidebar.displaySidebar(false);
+    },
+    toggleMenu() {
+      this.showMenu = !this.showMenu;
+    },
+  },
+};
+</script>
+
 <template>
   <nav
     class="navbar navbar-expand-lg navbar-absolute"
@@ -222,83 +302,26 @@
     </div>
   </nav>
 </template>
-<script>
-import { CollapseTransition } from "vue2-transitions";
-import Modal from "@/components/Modal";
 
-export default {
-  components: {
-    CollapseTransition,
-    Modal,
-  },
-  computed: {
-    routeName() {
-      const { name } = this.$route;
-      return this.capitalizeFirstLetter(name);
-    },
-    isRTL() {
-      return this.$rtl.isRTL;
-    },
-    loggedIn() {
-      return this.session;
-    },
-    filteredUsers() {
-      const users = this.users.filter((user) =>
-        user.name.toLowerCase().includes(this.searchQuery.toLowerCase())
-      );
-      return this.searchQuery !== "" ? users : [];
-    },
-  },
-  data() {
-    return {
-      activeNotifications: false,
-      showMenu: false,
-      searchModalVisible: false,
-      searchQuery: "",
-      session: true,
-      //! DUMMY USERS
-      users: [
-        {
-          id: 1,
-          name: "	Andrew Mike",
-          level: "10",
-          nameTag: "Develop",
-          type: "Normal",
-          restricted: true,
-          profilePicURL: 'https://placehold.co/240',
-        },
-        {
-          id: 2,
-          name: "	John Doe",
-          level: "20",
-          nameTag: "Design",
-          type: "Admin",
-          restricted: false,
-          profilePicURL: 'https://placehold.co/240',
-        },
-      ],
-    };
-  },
-  methods: {
-    capitalizeFirstLetter(string) {
-      return string.charAt(0).toUpperCase() + string.slice(1);
-    },
-    toggleNotificationDropDown() {
-      this.activeNotifications = !this.activeNotifications;
-    },
-    closeDropDown() {
-      this.activeNotifications = false;
-    },
-    toggleSidebar() {
-      this.$sidebar.displaySidebar(!this.$sidebar.showSidebar);
-    },
-    hideSidebar() {
-      this.$sidebar.displaySidebar(false);
-    },
-    toggleMenu() {
-      this.showMenu = !this.showMenu;
-    },
-  },
-};
-</script>
-<style></style>
+<style scoped>
+/* Custom styles for dropdown items */
+.nav-item.dropdown-item {
+  font-size: 16px;
+  color: #333;
+}
+
+.nav-item.dropdown-item:hover {
+  color: #007bff;
+  text-decoration: underline;
+}
+
+/* Additional styling for the navbar */
+.navbar-toggler {
+  border: none;
+}
+
+.navbar-toggler-bar {
+  background-color: #333;
+}
+</style>
+
