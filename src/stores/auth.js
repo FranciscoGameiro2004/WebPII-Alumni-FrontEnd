@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import * as api from '@/api/api.js';
 
 const TOKEN_BASE_URL = 'http://127.0.0.1:3000';
-const resources = `login`;
+const resources = `users/login`;
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({
@@ -14,7 +14,8 @@ export const useAuthStore = defineStore('auth', {
     actions: {
         async fetchToken(data) {
             console.log('Fetching token'); //console.table(data)
-            //const token = await api.post(TOKEN_BASE_URL, resources, data); console.log(token)
+            const token = await api.post(TOKEN_BASE_URL, resources, data); console.log(token)
+            this.authToken = token
         }
     }
 })

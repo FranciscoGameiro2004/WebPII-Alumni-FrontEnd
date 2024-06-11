@@ -17,9 +17,9 @@ export default {
       let data = {
         username: this.userInput,
         password:  this.passInput
-      }; //console.log(data)
+      }; console.log(data)
 
-      //await this.authStore.fetchToken(data)
+      await this.authStore.fetchToken(data)
     }
   }
 }
