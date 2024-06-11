@@ -1,18 +1,17 @@
 import { defineStore } from 'pinia';
 import * as api from '@/api/api.js';
-import { get } from 'mongoose';
+//import { get } from 'mongoose';
 
 const USERS_BASE_URL = 'http://127.0.0.1:3000';
 const resources = `users`;
 
 //http://127.0.0.1:3000/users/?search=&nationality=&page=0&limit=5
 
-export const useUsersStore = defineStore('user', {
+export const useUserStore = defineStore('user', {
   state: () => ({
     users: [],
     foundUserID: 0,
     foundUser: {},
-    userLogged: {}
   }),
   getters: {
     getUsers: (state) => state.users.data,

@@ -1,7 +1,7 @@
 <script>
 import { CollapseTransition } from "vue2-transitions";
 import Modal from "@/components/Modal";
-import { useUserStore } from "../../stores/users"
+import { useAuthStore } from "../../stores/auth";
 
 export default {
   components: {
@@ -9,10 +9,7 @@ export default {
     Modal,
   },
   data() {
-    return {
-      userStore: useUserStore(),
-      userLogged:{},
-
+    return {      
       activeNotifications: false,
       showMenu: false,
       searchModalVisible: false,
@@ -58,7 +55,6 @@ export default {
       );
       return this.searchQuery !== "" ? users : [];
     },
-
   },
   methods: {
     capitalizeFirstLetter(string) {
@@ -192,6 +188,8 @@ export default {
                 </div>
               </div>
             </modal>
+
+            <!--Notificações-->
             <base-dropdown
               tag="li"
               :menu-on-right="!$rtl.isRTL"
@@ -234,6 +232,8 @@ export default {
                 <a href="#" class="nav-item dropdown-item">Another one</a>
               </li>
             </base-dropdown>
+            
+            <!--Conta logada-->
             <base-dropdown
               tag="li"
               :menu-on-right="!$rtl.isRTL"
@@ -266,6 +266,8 @@ export default {
                 <a href="#" class="nav-item dropdown-item">Log out</a>
               </li>
             </base-dropdown>
+
+            <!--Conta não logada-->
             <base-dropdown
               tag="li"
               :menu-on-right="!$rtl.isRTL"
@@ -301,6 +303,7 @@ export default {
                 >
               </li>
             </base-dropdown>
+
           </ul>
         </div>
       </collapse-transition>
