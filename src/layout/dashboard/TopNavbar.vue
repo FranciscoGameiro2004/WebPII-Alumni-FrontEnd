@@ -1,32 +1,18 @@
 <script>
 import { CollapseTransition } from "vue2-transitions";
 import Modal from "@/components/Modal";
+import { useUserStore } from "../../stores/users"
 
 export default {
   components: {
     CollapseTransition,
     Modal,
   },
-  computed: {
-    routeName() {
-      const { name } = this.$route;
-      return this.capitalizeFirstLetter(name);
-    },
-    isRTL() {
-      return this.$rtl.isRTL;
-    },
-    loggedIn() {
-      return this.session;
-    },
-    filteredUsers() {
-      const users = this.users.filter((user) =>
-        user.name.toLowerCase().includes(this.searchQuery.toLowerCase())
-      );
-      return this.searchQuery !== "" ? users : [];
-    },
-  },
   data() {
     return {
+      userStore: useUserStore(),
+      userLogged:{},
+
       activeNotifications: false,
       showMenu: false,
       searchModalVisible: false,
@@ -54,6 +40,25 @@ export default {
         },
       ],
     };
+  },
+  computed: {
+    routeName() {
+      const { name } = this.$route;
+      return this.capitalizeFirstLetter(name);
+    },
+    isRTL() {
+      return this.$rtl.isRTL;
+    },
+    loggedIn() {
+      return this.session;
+    },
+    filteredUsers() {
+      const users = this.users.filter((user) =>
+        user.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+      return this.searchQuery !== "" ? users : [];
+    },
+
   },
   methods: {
     capitalizeFirstLetter(string) {

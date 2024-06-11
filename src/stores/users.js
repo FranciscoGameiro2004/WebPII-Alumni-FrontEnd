@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import * as api from '@/api/api.js';
+import { get } from 'mongoose';
 
 const USERS_BASE_URL = 'http://127.0.0.1:3000';
 const resources = `users`;
@@ -11,11 +12,13 @@ export const useUsersStore = defineStore('user', {
     users: [],
     foundUserID: 0,
     foundUser: {},
+    userLogged: {}
   }),
   getters: {
     getUsers: (state) => state.users.data,
     getUserPageInfo: (state) => state.users.pagination,
     getUser: (state) => state.foundUser,
+    getUserLogged: (state) => state.userLogged
   },
   actions: {
     async fetchUsers(search='', page='0', limit='5') {
