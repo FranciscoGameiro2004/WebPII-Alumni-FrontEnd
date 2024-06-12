@@ -1,0 +1,86 @@
+<div :class="classShow" v-if="user.degrees">
+  <card v-for="degree of user.degrees" :key="degree.degree">
+    <div class="d-flex justify-content-between">
+      <h4 class="card-title">Academic</h4>
+      <base-button round icon type="default" v-if="ownProfile" @click="toggleAdd(); modals.newAcademic = true">
+        <i class="tim-icons icon-simple-add text-white"></i>
+      </base-button>
+    </div>
+    <card class="d-flex flex-row">
+      <img
+        slot="image"
+        class=""
+        src="https://placehold.co/240"
+        alt="Card image cap"
+        height="115px"
+        width="115px"
+      />
+      <div class="d-flex justify-content-between">
+        <div>
+          <h6 class="card-subtitle text-muted mb-0">Licenciatura em</h6>
+          <h4 class="card-title">
+            {{ degree.degree }}
+          </h4>
+          <!-- <h5 class="card-subtitle mb-2">
+            Escola Superior de Media Artes e Design
+          </h5> -->
+          <h6 class="card-subtitle mb-2 text-muted">{{ degree.firstYear }} - {{ degree.lastYear ? degree.lastYear : '(presente)' }}</h6>
+          <a href="#" class="card-link">Site Instituição</a>
+        </div>
+        <div v-if="ownProfile" class="d-flex flex-column">
+          <base-button round icon type="warning" @click="toggleEdit(); modals.newAcademic = true">
+              <i class="tim-icons icon-pencil text-white"></i
+            >
+          </base-button>
+          <base-button round icon type="danger">
+            <i class="tim-icons icon-trash-simple text-white"></i
+            >
+          </base-button>
+        </div>
+      </div>
+    </card>
+  </card>
+</div>
+
+<div :class="classShow" v-if="user.jobs">
+  <card v-for="job of user.jobs" :key="job.role">
+    <div class="d-flex justify-content-between">
+      <h4 class="card-title">Professional Career</h4>
+      <base-button round icon type="default" @click="toggleAdd(); modals.newCareer = true" v-if="ownProfile">
+        <i class="tim-icons icon-simple-add text-white"></i>
+      </base-button>
+    </div>
+    <card class="d-flex flex-row">
+      <img
+        slot="image"
+        class=""
+        src="https://placehold.co/240"
+        alt="Card image cap"
+        height="115px"
+      />
+      <div class="d-flex justify-content-between">
+        <div>
+          <h4 class="card-title">Empresa Fixe Lta.</h4>
+          <!--! Isto é um texto satírico -->
+          <h5 class="card-subtitle mb-2">Nome Cargo</h5>
+          <h6 class="card-subtitle mb-2 text-muted">2022 - (presente)</h6>
+          <a href="#" class="card-link">Site Empresa</a>
+        </div>
+        <div v-if="ownProfile" class="d-flex flex-column">
+          <base-button round icon type="warning" @click="toggleEdit(); modals.newCareer = true">
+            <i class="tim-icons icon-pencil text-white"></i
+            >
+          </base-button>
+          <base-button round icon type="danger">
+            <i class="tim-icons icon-trash-simple text-white"></i
+            >
+          </base-button>
+        </div>
+      </div>
+    </card>
+  </card>
+</div>
+
+<div class="col-md-12" v-if="ownProfile" id="editProfile">
+  <edit-profile-form :model="model"> </edit-profile-form>
+</div>
