@@ -2,6 +2,7 @@
 import EditProfileForm from "./Profile/EditProfileForm";
 import UserCard from "./Profile/UserCard";
 import Modal from "../components/Modal"
+import { useUserStore } from"../stores/users"
 
 export default {
   components: {
@@ -11,7 +12,8 @@ export default {
   },
   data() {
     return {
-      usersStore: useUsersStore(),
+      userStore: useUserStore(),
+      user: {},
       model: {
         company: "Creative Code Inc.",
         email: "mike@email.com",
@@ -24,12 +26,9 @@ export default {
         about:
           "Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo.",
       },
-      user: {
-        fullName: "Mike Andrew",
-        title: "NameTag",
-        following: false,
-        level: 69,
-      },
+
+      userId:0,
+
       ownProfile: false,
       showAcademic: true,
       showCareer: true,
@@ -72,7 +71,9 @@ export default {
     },
   },
   mounted () {
-    this.usersStore.fetchUserById(this.profileId)
+    console.log("Profile.vue")
+    this.userId = this.userStore.getUserLogged.id; console.log(this.userId);
+    this.user = this.userStore.fetchUserById(this.userId); console.log(this.user);
   },
 };
 </script>
@@ -80,16 +81,18 @@ export default {
 <template>
   <div class="row">
     <div class="col-md-12">
-      <user-card :user="userInfo" :ownProfile="ownProfile"></user-card>
+      <user-card :user="user" :ownProfile="ownProfile"></user-card>
     </div>
-    <div :class="classShow" v-if="userInfo.degrees">
-      <card v-for="degree of userInfo.degrees" :key="degree.degree">
+    
+    <div :class="classShow" v-if="user.degrees">
+      <card v-for="degree of user.degrees" :key="degree.degrees">
         <div class="d-flex justify-content-between">
           <h4 class="card-title">Academic</h4>
           <base-button round icon type="default" v-if="ownProfile" @click="toggleAdd(); modals.newAcademic = true">
             <i class="tim-icons icon-simple-add text-white"></i>
           </base-button>
         </div>
+
         <card class="d-flex flex-row">
           <img
             slot="image"
@@ -99,6 +102,7 @@ export default {
             height="115px"
             width="115px"
           />
+
           <div class="d-flex justify-content-between">
             <div>
               <h6 class="card-subtitle text-muted mb-0">Licenciatura em</h6>
@@ -111,6 +115,7 @@ export default {
               <h6 class="card-subtitle mb-2 text-muted">{{ degree.firstYear }} - {{ degree.lastYear ? degree.lastYear : '(presente)' }}</h6>
               <a href="#" class="card-link">Site Instituição</a>
             </div>
+
             <div v-if="ownProfile" class="d-flex flex-column">
               <base-button round icon type="warning" @click="toggleEdit(); modals.newAcademic = true">
                   <i class="tim-icons icon-pencil text-white"></i
@@ -126,48 +131,10 @@ export default {
       </card>
     </div>
 
-    <div :class="classShow" v-if="userInfo.jobs">
-      <card v-for="job of userInfo.jobs" :key="job.role">
-        <div class="d-flex justify-content-between">
-          <h4 class="card-title">Professional Career</h4>
-          <base-button round icon type="default" @click="toggleAdd(); modals.newCareer = true" v-if="ownProfile">
-            <i class="tim-icons icon-simple-add text-white"></i>
-          </base-button>
-        </div>
-        <card class="d-flex flex-row">
-          <img
-            slot="image"
-            class=""
-            src="https://placehold.co/240"
-            alt="Card image cap"
-            height="115px"
-          />
-          <div class="d-flex justify-content-between">
-            <div>
-              <h4 class="card-title">Empresa Fixe Lta.</h4>
-              <!--! Isto é um texto satírico -->
-              <h5 class="card-subtitle mb-2">Nome Cargo</h5>
-              <h6 class="card-subtitle mb-2 text-muted">2022 - (presente)</h6>
-              <a href="#" class="card-link">Site Empresa</a>
-            </div>
-            <div v-if="ownProfile" class="d-flex flex-column">
-              <base-button round icon type="warning" @click="toggleEdit(); modals.newCareer = true">
-                <i class="tim-icons icon-pencil text-white"></i
-                >
-              </base-button>
-              <base-button round icon type="danger">
-                <i class="tim-icons icon-trash-simple text-white"></i
-                >
-              </base-button>
-            </div>
-          </div>
-        </card>
-      </card>
+    <div :class="classShow" v-else>
+      <h1>Nenhuma curso registado</h1>
     </div>
 
-    <div class="col-md-12" v-if="ownProfile" id="editProfile">
-      <edit-profile-form :model="model"> </edit-profile-form>
-    </div>
     <modal :show.sync="modals.newCareer">
      <template slot="header">
         <h5 class="modal-title" id="exampleModalLabel" v-if="!editModal">Add job</h5>
