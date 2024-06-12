@@ -1,3 +1,82 @@
+<script>
+import EditProfileForm from "./Profile/EditProfileForm";
+import UserCard from "./Profile/UserCard";
+import Modal from "../components/Modal"
+
+export default {
+  components: {
+    EditProfileForm,
+    UserCard,
+    Modal,
+  },
+  data() {
+    return {
+      usersStore: useUsersStore(),
+      model: {
+        company: "Creative Code Inc.",
+        email: "mike@email.com",
+        username: "michael23",
+        firstName: "Mike",
+        lastName: "Andrew",
+        address: "Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09",
+        city: "Melbourne",
+        country: "Australia",
+        about:
+          "Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo.",
+      },
+      user: {
+        fullName: "Mike Andrew",
+        title: "NameTag",
+        following: false,
+        level: 69,
+      },
+      ownProfile: false,
+      showAcademic: true,
+      showCareer: true,
+      modals: {
+        newCareer: false,
+        newAcademic: false
+      },
+      edit: true
+    };
+  },
+  computed: {
+    counter() {
+      let counter = 0;
+      counter += this.showAcademic ? 1 : 0;
+      counter += this.showCareer ? 1 : 0;
+      return counter;
+    },
+    classShow() {
+      if (this.counter == 2) {
+        return "col-md-6";
+      }
+      return "col-md-12";
+    },
+    editModal () {
+      return this.edit
+    },
+    profileId(){
+      return this.$route.params.id
+    },
+    userInfo(){
+      return this.usersStore.getUser
+    }
+  },
+  methods: {
+    toggleEdit() {
+      this.edit = true
+    },
+    toggleAdd() {
+      this.edit = false
+    },
+  },
+  mounted () {
+    this.usersStore.fetchUserById(this.profileId)
+  },
+};
+</script>
+
 <template>
   <div class="row">
     <div class="col-md-12">
@@ -169,82 +248,5 @@
    </modal>
   </div>
 </template>
-<script>
-import EditProfileForm from "./Profile/EditProfileForm";
-import UserCard from "./Profile/UserCard";
-import Modal from "../components/Modal"
-import {useUsersStore} from '@/stores/users'
-export default {
-  components: {
-    EditProfileForm,
-    UserCard,
-    Modal,
-  },
-  data() {
-    return {
-      usersStore: useUsersStore(),
-      model: {
-        company: "Creative Code Inc.",
-        email: "mike@email.com",
-        username: "michael23",
-        firstName: "Mike",
-        lastName: "Andrew",
-        address: "Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09",
-        city: "Melbourne",
-        country: "Australia",
-        about:
-          "Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo.",
-      },
-      user: {
-        fullName: "Mike Andrew",
-        title: "NameTag",
-        following: false,
-        level: 69,
-      },
-      ownProfile: false,
-      showAcademic: true,
-      showCareer: true,
-      modals: {
-        newCareer: false,
-        newAcademic: false
-      },
-      edit: true
-    };
-  },
-  computed: {
-    counter() {
-      let counter = 0;
-      counter += this.showAcademic ? 1 : 0;
-      counter += this.showCareer ? 1 : 0;
-      return counter;
-    },
-    classShow() {
-      if (this.counter == 2) {
-        return "col-md-6";
-      }
-      return "col-md-12";
-    },
-    editModal () {
-      return this.edit
-    },
-    profileId(){
-      return this.$route.params.id
-    },
-    userInfo(){
-      return this.usersStore.getUser
-    }
-  },
-  methods: {
-    toggleEdit() {
-      this.edit = true
-    },
-    toggleAdd() {
-      this.edit = false
-    },
-  },
-  mounted () {
-    this.usersStore.fetchUserById(this.profileId)
-  },
-};
-</script>
+
 <style></style>

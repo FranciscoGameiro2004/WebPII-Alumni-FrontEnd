@@ -12,12 +12,17 @@ export const useUserStore = defineStore('user', {
     users: [],
     foundUserID: 0,
     foundUser: {},
+    //userLogged data
+    userLogged: null,
+		userToken: ''
   }),
   getters: {
     getUsers: (state) => state.users.data,
     getUserPageInfo: (state) => state.users.pagination,
     getUser: (state) => state.foundUser,
-    getUserLogged: (state) => state.userLogged
+    //userLogged getters
+    getUserLogged: (state) => state.userLogged,
+    getUserToken: (state) => state.userToken
   },
   actions: {
     async fetchUsers(search='', page='0', limit='5') {
@@ -42,5 +47,11 @@ export const useUserStore = defineStore('user', {
         throw error;
       }
     },
+    async postLogin(data) {
+			console.log('Fetching token'); //console.table(data)
+			const resData = await api.post(USERS_BASE_URL, `${resources}/login`, data); console.log(resData)
+			this.userLogged = resData.userToLogin; console.log(this.userLogged);
+			this.userToken = resData.accessToken; console.log(this.userToken);
+		}
   }
 });

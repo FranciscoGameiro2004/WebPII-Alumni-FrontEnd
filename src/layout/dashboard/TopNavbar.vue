@@ -1,15 +1,14 @@
 <script>
 import { CollapseTransition } from "vue2-transitions";
 import Modal from "@/components/Modal";
-import { useAuthStore } from "../../stores/auth";
+import { useUserStore } from '../../stores/users.js'
+import { watch } from "vue";
 
 export default {
-  components: {
-    CollapseTransition,
-    Modal,
-  },
   data() {
     return {      
+      userStore: useUserStore(),
+
       activeNotifications: false,
       showMenu: false,
       searchModalVisible: false,
@@ -38,6 +37,10 @@ export default {
       ],
     };
   },
+  components: {
+    CollapseTransition,
+    Modal,
+  },
   computed: {
     routeName() {
       const { name } = this.$route;
@@ -55,6 +58,9 @@ export default {
       );
       return this.searchQuery !== "" ? users : [];
     },
+    userData() {
+      return this.userStore.getUserLogged
+    }
   },
   methods: {
     capitalizeFirstLetter(string) {
@@ -76,6 +82,18 @@ export default {
       this.showMenu = !this.showMenu;
     },
   },
+  watch: {
+    // Observando mudanças em userLogged e userToken
+    'userStore.getUserLogged': {
+      handler(newVal, oldVal) {
+        console.log('getUserLogged mudou de', oldVal, 'para', newVal);
+        if( newVal != null) {
+          this.session = true
+        }
+      },
+      immediate: true,
+    },
+  }
 };
 </script>
 
@@ -189,6 +207,8 @@ export default {
               </div>
             </modal>
 
+            <!--Conta logada-->
+
             <!--Notificações-->
             <base-dropdown
               tag="li"
@@ -233,7 +253,6 @@ export default {
               </li>
             </base-dropdown>
             
-            <!--Conta logada-->
             <base-dropdown
               tag="li"
               :menu-on-right="!$rtl.isRTL"
@@ -250,14 +269,21 @@ export default {
                 aria-expanded="true"
               >
                 <div class="photo">
-                  <img src="img/anime3.png" />
+                  <img :src="userData.profilePicLink"/>
                 </div>
                 <b class="caret d-none d-lg-block d-xl-block"></b>
-                <p class="d-lg-none">Log out</p>
               </a>
-              <li class="nav-link">
+
+              <router-link
+                :to="{ name: 'profile', params: { id: userData.id } }"
+              >
+                <li class="nav-link">
                 <a href="#" class="nav-item dropdown-item">Profile</a>
               </li>
+              </router-link>
+
+              
+
               <li class="nav-link">
                 <a href="#" class="nav-item dropdown-item">Settings</a>
               </li>

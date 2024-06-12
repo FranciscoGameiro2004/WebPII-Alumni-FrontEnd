@@ -1,9 +1,9 @@
 <script>
-import { useAuthStore } from "../stores/auth"
+import { useUserStore } from "../stores/users"
 export default {
   data() {
     return {
-      authStore: useAuthStore(),
+      userStore: useUserStore(),
       userInput: '',
       passInput: ''
     }
@@ -19,7 +19,7 @@ export default {
         password:  this.passInput
       }; console.log(data)
 
-      await this.authStore.postLogin(data)
+      await this.userStore.postLogin(data)
     }
   }
 }
