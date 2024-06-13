@@ -13,7 +13,7 @@ export default {
   data() {
     return {
       userStore: useUserStore(),
-      user: {},
+      userLogged: {},
       model: {
         company: "Creative Code Inc.",
         email: "mike@email.com",
@@ -73,20 +73,36 @@ export default {
   mounted () {
     console.log("Profile.vue")
     this.userId = this.userStore.getUserLogged.id; console.log(this.userId);
-    this.user = this.userStore.fetchUserById(this.userId); console.log(this.user);
+    this.userLogged = this.userStore.getUserLogged; console.log(this.userLogged);
   },
-  
+  /*
+  watch: {
+    // Observando mudanças em userLogged e userToken
+    'userStore.getUserLogged': {
+      handler(newVal, oldVal) {
+        console.log('getUserLogged mudou de', oldVal, 'para', newVal);
+        if( newVal != null) {
+          this.userLogged = 
+        }
+      },
+      immediate: true,
+    },
+  }
+  */
 };
 </script>
 
 <template>
   <div class="row">
     <div class="col-md-12">
-      <user-card :user="user" :ownProfile="ownProfile"></user-card>
+      <user-card 
+        :user="userLogged" 
+        :ownProfile="ownProfile">
+      </user-card>
     </div>
     
-    <div :class="classShow" v-if="user.degrees">
-      <card v-for="degree of user.degrees" :key="degree.degrees">
+    <div :class="classShow" v-if="userLogged.degrees">
+      <card v-for="degree of userLogged.degrees" :key="degree.degrees">
         <div class="d-flex justify-content-between">
           <h4 class="card-title">Academic</h4>
           <base-button round icon type="default" v-if="ownProfile" @click="toggleAdd(); modals.newAcademic = true">
@@ -131,13 +147,12 @@ export default {
         </card>
       </card>
     </div>
-
     <div :class="classShow" v-else>
       <h1>Nenhuma curso registado</h1>
     </div>
 
-    <div :class="classShow" v-if="user.jobs">
-      <card v-for="job of user.jobs" :key="job.role">
+    <div :class="classShow" v-if="userLogged.jobs">
+      <card v-for="job of userLogged.jobs" :key="job.role">
         <div class="d-flex justify-content-between">
           <h4 class="card-title">Professional Career</h4>
           <base-button round icon type="default" @click="toggleAdd(); modals.newCareer = true" v-if="ownProfile">
@@ -174,7 +189,6 @@ export default {
         </card>
       </card>
     </div>
-
     <div :class="classShow" v-else>
       <h1>Nenhuma emprego registado</h1>
     </div>
