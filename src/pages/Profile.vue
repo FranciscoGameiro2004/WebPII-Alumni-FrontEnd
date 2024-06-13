@@ -75,6 +75,7 @@ export default {
     this.userId = this.userStore.getUserLogged.id; console.log(this.userId);
     this.user = this.userStore.fetchUserById(this.userId); console.log(this.user);
   },
+  
 };
 </script>
 
@@ -133,6 +134,54 @@ export default {
 
     <div :class="classShow" v-else>
       <h1>Nenhuma curso registado</h1>
+    </div>
+
+    <div :class="classShow" v-if="user.jobs">
+      <card v-for="job of user.jobs" :key="job.role">
+        <div class="d-flex justify-content-between">
+          <h4 class="card-title">Professional Career</h4>
+          <base-button round icon type="default" @click="toggleAdd(); modals.newCareer = true" v-if="ownProfile">
+            <i class="tim-icons icon-simple-add text-white"></i>
+          </base-button>
+        </div>
+        <card class="d-flex flex-row">
+          <img
+            slot="image"
+            class=""
+            src="https://placehold.co/240"
+            alt="Card image cap"
+            height="115px"
+          />
+          <div class="d-flex justify-content-between">
+            <div>
+              <h4 class="card-title">Empresa Fixe Lta.</h4>
+              <!--! Isto é um texto satírico -->
+              <h5 class="card-subtitle mb-2">Nome Cargo</h5>
+              <h6 class="card-subtitle mb-2 text-muted">2022 - (presente)</h6>
+              <a href="#" class="card-link">Site Empresa</a>
+            </div>
+            <div v-if="ownProfile" class="d-flex flex-column">
+              <base-button round icon type="warning" @click="toggleEdit(); modals.newCareer = true">
+                <i class="tim-icons icon-pencil text-white"></i
+                >
+              </base-button>
+              <base-button round icon type="danger">
+                <i class="tim-icons icon-trash-simple text-white"></i
+                >
+              </base-button>
+            </div>
+          </div>
+        </card>
+      </card>
+    </div>
+
+    <div :class="classShow" v-else>
+      <h1>Nenhuma emprego registado</h1>
+    </div>
+
+    
+    <div class="col-md-12" v-if="ownProfile" id="editProfile">
+      <edit-profile-form :model="model"> </edit-profile-form>
     </div>
 
     <modal :show.sync="modals.newCareer">
