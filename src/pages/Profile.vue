@@ -195,7 +195,7 @@ export default {
 
     
     <div class="col-md-12" v-if="ownProfile" id="editProfile">
-      <edit-profile-form :model="model"> </edit-profile-form>
+      <edit-profile-form :model="model"></edit-profile-form>
     </div>
 
     <modal :show.sync="modals.newCareer">

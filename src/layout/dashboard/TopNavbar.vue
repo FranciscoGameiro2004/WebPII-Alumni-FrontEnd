@@ -278,8 +278,8 @@ export default {
                 :to="{ name: 'profile', params: { id: userData.id } }"
               >
                 <li class="nav-link">
-                <a href="#" class="nav-item dropdown-item">Profile</a>
-              </li>
+                  <a href="#" class="nav-item dropdown-item">Profile</a>
+                </li>
               </router-link>
 
               

@@ -7,7 +7,7 @@
       <div class="block block-three"></div>
       <div class="block block-four"></div>
       <a href="#">
-        <img class="avatar" src="img/anime6.png" alt="..." />
+        <img class="avatar" :src="user.profilePicLink" :alt="user.profilePicLink" />
         <h5 class="title">{{ user.name }}</h5>
         <h6 class="title">{{ user.username }}</h6>
       </a>
@@ -37,7 +37,9 @@
 
     <div slot="footer" v-if="ownProfile" class="d-flex flex-row-reverse">
         <base-button round icon type="warning">
-          <router-link :to="{hash: '#editProfile'}"><i class="tim-icons icon-pencil text-white"></i></router-link>
+          <router-link :to="{hash: '#editProfile'}">
+            <i class="tim-icons icon-pencil text-white"></i>
+          </router-link>
         </base-button>
     </div>
   </card>

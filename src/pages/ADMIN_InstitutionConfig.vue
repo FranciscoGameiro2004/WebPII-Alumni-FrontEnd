@@ -129,6 +129,7 @@ export default {
         <div v-if="institutionsList.length">
           <div class="row">
             <div class="col-md-6" v-for="institution in institutionsList" :key="institution.id">
+
               <card class="d-flex flex-column">
                 <img
                   slot="image"
@@ -170,6 +171,7 @@ export default {
                   </base-button>
                 </div>
               </card>
+              
             </div>
           </div>
         </div>

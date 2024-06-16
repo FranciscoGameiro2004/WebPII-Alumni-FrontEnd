@@ -1,6 +1,48 @@
+<script>
+import Modal from "../components/Modal"
+import { useDegreesStore } from "../stores/degrees.js";
+
+export default {
+  components: {
+    Modal,
+  },
+
+  data() {
+    return {
+      degreeStore: useDegreesStore(),
+      modals: {
+        newInstitution: false,
+      },
+      edit: false, institutionEdit:{},
+      currentPage: 1,
+      itemsPerPage: 2,
+    };
+  },
+  computed: {
+    degreesList() {
+      return this.degreeStore.degrees;
+    }
+  },
+  methods: {
+    toggleEdit() {
+      this.edit = true
+    },
+    toggleAdd() {
+      this.edit = false
+    },
+  },
+  mounted() {
+    console.clear();
+    console.log("mounted")
+    //this.fetchData(this.currentPage - 1, this.itemsPerPage);  // Ajusta o índice da página para começar em 0
+  }
+};
+</script>
+
 <template>
   <div>
     <card>
+
       <div class="d-flex justify-content-between">
         <h4 class="card-title">Degrees</h4>
         <base-button
@@ -15,6 +57,7 @@
           <i class="tim-icons icon-simple-add text-white"></i>
         </base-button>
       </div>
+
       <div class="d-flex justify-content-between">
         <base-input
           type="text"
@@ -35,6 +78,9 @@
         </base-input>
       </div>
 
+
+
+      <!--hardcode-->
       <card class="d-flex flex-row col-md-6">
         <img
           slot="image"
@@ -73,6 +119,7 @@
           </div>
         </div>
       </card>
+
     </card>
 
     <modal :show.sync="modals.newDegree"  body-classes="p-0">
@@ -123,30 +170,5 @@
     </modal>
   </div>
 </template>
-
-<script>
-import Modal from "../components/Modal"
-export default {
-  components: {
-    Modal,
-  },
-  data() {
-    return {
-      modals: {
-        newDegree: false,
-      },
-      edit: false
-    };
-  },
-  methods: {
-    toggleEdit() {
-      this.edit = true
-    },
-    toggleAdd() {
-      this.edit = false
-    },
-  },
-};
-</script>
 
 <style></style>
