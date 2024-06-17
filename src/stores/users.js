@@ -14,7 +14,8 @@ export const useUserStore = defineStore('user', {
     foundUser: {},
     //userLogged data
     userLogged: null,
-		userToken: ''
+		userToken: '',
+    userNotifications: []
   }),
   getters: {
     getUsers: (state) => state.users.data,
@@ -22,7 +23,8 @@ export const useUserStore = defineStore('user', {
     getUser: (state) => state.foundUser,
     //userLogged getters
     getUserLogged: (state) => state.userLogged,
-    getUserToken: (state) => state.userToken
+    getUserToken: (state) => state.userToken,
+    getNotifications: (state) => state.userNotifications
   },
   actions: {
     async fetchUsers(search='', page='0', limit='5') {
@@ -47,11 +49,34 @@ export const useUserStore = defineStore('user', {
         throw error;
       }
     },
+    async fetchNotifications(){
+      try {
+        console.log('noti');
+        console.log(this.getUserToken);
+        const data = await api.get(USERS_BASE_URL, `notifications?readState=0`, this.getUserToken);console.log(data);
+        this.userNotifications = data.notifications; // Armazena os dados no estado
+      } catch (error) {
+        console.log('Error fetching noti:', error);
+        //throw error;
+      }
+    },
+    async checkNotification(id){
+      try {
+        console.log('check noti');
+        console.log(this.getUserToken);
+        const data = await api.patch(USERS_BASE_URL, `notifications/${id}`, {}, this.getUserToken);console.log(data);
+        this.fetchNotifications()
+      } catch (error) {
+        console.log('Error update noti:', error);
+        //throw error;
+      }
+    },
     async postLogin(data) {
 			console.log('Fetching token'); //console.table(data)
 			const resData = await api.post(USERS_BASE_URL, `${resources}/login`, data); console.log(resData)
 			this.userLogged = resData.userToLogin; console.log(this.userLogged);
 			this.userToken = resData.accessToken; console.log(this.userToken);
+      await this.fetchNotifications()
 		}
   }
 });

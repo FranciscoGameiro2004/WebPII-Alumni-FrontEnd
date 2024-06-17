@@ -4,10 +4,16 @@
  * @param {string} endPoint - this is endpoint of the API
  * @returns a promise object with the response
  */
-export async function get(apiBaseUrl, endPoint){
+export async function get(apiBaseUrl, endPoint, token=''){
     console.log(apiBaseUrl + "/" + endPoint)
     try {
-        const response = await fetch(`${apiBaseUrl}/${endPoint}`);console.table(response)
+        const response = await fetch(`${apiBaseUrl}/${endPoint}`, {
+            method: 'GET',
+            headers:{
+                'Content-Type': 'application/json',
+                'Authorization': token != '' ? `Bearer ${token}` : ''
+            },
+        });console.table(response)
         return handleResponse(response)
     } catch (error) {
         console.log("error on GET")
@@ -22,12 +28,13 @@ export async function get(apiBaseUrl, endPoint){
  * @param {string} data - this is the data that will be sent to the server
  * @returns a promise object with the response
  */
-export async function post(apiBaseUrl, endPoint, data){
+export async function post(apiBaseUrl, endPoint, data, token=''){
     try {
         const response = await fetch(`${apiBaseUrl}/${endPoint}`,{
             method: 'POST',
             headers:{
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': token != '' ? `Bearer ${token}` : ''
             },
             body: JSON.stringify(data)
         })
@@ -44,12 +51,13 @@ export async function post(apiBaseUrl, endPoint, data){
  * @param {string} data - this is the data that will be sent to the server
  * @returns a promise object with the response
  */
-export async function put(apiBaseUrl, endPoint, data){
+export async function put(apiBaseUrl, endPoint, data, token=''){
     try {
         const response = await fetch(`${apiBaseUrl}/${endPoint}`,{
             method: 'PUT',
             headers:{
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': token != '' ? `Bearer ${token}` : ''
             },
             body: JSON.stringify(data)
         })
@@ -66,12 +74,13 @@ export async function put(apiBaseUrl, endPoint, data){
  * @param {string} data - this is the data that will be sent to the server
  * @returns a promise object with the response
  */
-export async function patch(apiBaseUrl, endPoint, data){
+export async function patch(apiBaseUrl, endPoint, data, token=''){
     try {
         const response = await fetch(`${apiBaseUrl}/${endPoint}`,{
             method: 'PATCH',
             headers:{
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': token != '' ? `Bearer ${token}` : ''
             },
             body: JSON.stringify(data)
         })
@@ -88,12 +97,13 @@ export async function patch(apiBaseUrl, endPoint, data){
  * @param {string} data - this is the data that will be sent to the server
  * @returns a promise object with the response
  */
-export async function del(apiBaseUrl, endPoint, data){
+export async function del(apiBaseUrl, endPoint, data, token=''){
     try {
         const response = await fetch(`${apiBaseUrl}/${endPoint}`,{
             method: 'DELETE',
             headers:{
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': token != '' ? `Bearer ${token}` : ''
             },
             body: JSON.stringify(data)
         })

@@ -60,7 +60,10 @@ export default {
     },
     userData() {
       return this.userStore.getUserLogged
-    }
+    },
+    userNotifications() {
+      return this.userStore.getNotifications
+    },
   },
   methods: {
     capitalizeFirstLetter(string) {
@@ -81,6 +84,9 @@ export default {
     toggleMenu() {
       this.showMenu = !this.showMenu;
     },
+    markNotification(id) {
+      this.userStore.checkNotification(id)
+    }
   },
   watch: {
     // Observando mudanças em userLogged e userToken
@@ -228,29 +234,20 @@ export default {
                 <i class="tim-icons icon-sound-wave"></i>
                 <p class="d-lg-none">New Notifications</p>
               </a>
-              <li class="nav-link">
+              <div v-if="userNotifications.length > 0">
+                <li class="nav-link" v-for="notification in userNotifications" :key="notification.id" @click="markNotification(notification.id)">
                 <a href="#" class="nav-item dropdown-item"
-                  >Mike John responded to your email</a
+                  >{{ notification.message }}</a
                 >
               </li>
-              <li class="nav-link">
-                <a href="#" class="nav-item dropdown-item"
-                  >You have 5 more tasks</a
+              </div>
+              <div v-else>
+                <li class="nav-link" v-for="notification in userNotifications" :key="notification.id" @click="markNotification(notification.id)">
+                <p href="#" class="nav-item dropdown-item"
+                  >No notifications to read</p
                 >
               </li>
-              <li class="nav-link">
-                <a href="#" class="nav-item dropdown-item"
-                  >Your friend Michael is in town</a
-                >
-              </li>
-              <li class="nav-link">
-                <a href="#" class="nav-item dropdown-item"
-                  >Another notification</a
-                >
-              </li>
-              <li class="nav-link">
-                <a href="#" class="nav-item dropdown-item">Another one</a>
-              </li>
+              </div>
             </base-dropdown>
             
             <base-dropdown
