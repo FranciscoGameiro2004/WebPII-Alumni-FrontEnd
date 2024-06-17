@@ -19,11 +19,11 @@
       </p>
     </div>
     <p></p>
-    <!-- <div v-if="!ownProfile" class="d-flex justify-content-center">
+    <div v-if="!ownProfile" class="d-flex justify-content-center">
       <base-button type="primary" v-if="!user.following">Follow</base-button>
       <base-button simple type="primary" v-else>Unfollow</base-button>
-    </div> -->
-    <div slot="footer" class="button-container">
+    </div>
+    <!-- <div slot="footer" class="button-container">
       <base-button icon round class="btn-facebook">
         <i class="fab fa-facebook"></i>
       </base-button>
@@ -33,7 +33,7 @@
       <base-button icon round class="btn-google">
         <i class="fab fa-google-plus"></i>
       </base-button>
-    </div>
+    </div> -->
 
     <div slot="footer" v-if="ownProfile" class="d-flex flex-row-reverse">
         <base-button round icon type="warning">

@@ -12,21 +12,27 @@ export const useUserStore = defineStore('user', {
     users: [],
     foundUserID: 0,
     foundUser: {},
+    searchUser: {},
     //userLogged data
     userLogged: null,
 		userToken: '',
     userNotifications: [],
-    type: 'normal'
+    type: 'normal',
+    degrees: [],
+    jobs: []
   }),
   getters: {
     getUsers: (state) => state.users.data,
     getUserPageInfo: (state) => state.users.pagination,
     getUser: (state) => state.foundUser,
+    getSearchUser: (state) => state.searchUser,
     //userLogged getters
     getUserLogged: (state) => state.userLogged,
     getUserToken: (state) => state.userToken,
     getNotifications: (state) => state.userNotifications,
-    getUserType: (state) => state.type
+    getUserType: (state) => state.type,
+    getUserDegrees: (state) => state.degrees,
+    getUserJobs: (state) => state.jobs
   },
   actions: {
     async fetchUsers(search='', page='0', limit='5') {
@@ -48,6 +54,16 @@ export const useUserStore = defineStore('user', {
         this.foundUser = data; // Armazena os dados no estado
       } catch (error) {
         console.error('Error fetching user:', error);
+        throw error;
+      }
+    },
+    async searchUserById(id){
+      console.log('Fetching user by id');
+      try {
+        const data = await api.get(USERS_BASE_URL, `${resources}/${id}`);console.log(data);
+        this.searchUser = data; // Armazena os dados no estado
+      } catch (error) {
+        console.error('Error searching user:', error);
         throw error;
       }
     },
@@ -84,6 +100,14 @@ export const useUserStore = defineStore('user', {
       } catch (error) {
         console.log(error.message)
       }
-		}
+		},
+    async fetchUserDegreesAndJobs(id){
+      console.log('Fetch Degrees and Jobs');
+      console.log(this.getUserToken);
+      const data = await api.get(USERS_BASE_URL, `users/${id}`);console.log(data);
+      console.log(data);
+      this.degrees = data.degrees
+      this.jobs = data.jobs
+    }
   }
 });
