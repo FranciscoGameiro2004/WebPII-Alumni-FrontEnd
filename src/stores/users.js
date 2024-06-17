@@ -15,7 +15,8 @@ export const useUserStore = defineStore('user', {
     //userLogged data
     userLogged: null,
 		userToken: '',
-    userNotifications: []
+    userNotifications: [],
+    type: 'normal'
   }),
   getters: {
     getUsers: (state) => state.users.data,
@@ -24,7 +25,8 @@ export const useUserStore = defineStore('user', {
     //userLogged getters
     getUserLogged: (state) => state.userLogged,
     getUserToken: (state) => state.userToken,
-    getNotifications: (state) => state.userNotifications
+    getNotifications: (state) => state.userNotifications,
+    getUserType: (state) => state.type
   },
   actions: {
     async fetchUsers(search='', page='0', limit='5') {
@@ -72,11 +74,16 @@ export const useUserStore = defineStore('user', {
       }
     },
     async postLogin(data) {
-			console.log('Fetching token'); //console.table(data)
+			try {
+        console.log('Fetching token'); //console.table(data)
 			const resData = await api.post(USERS_BASE_URL, `${resources}/login`, data); console.log(resData)
 			this.userLogged = resData.userToLogin; console.log(this.userLogged);
 			this.userToken = resData.accessToken; console.log(this.userToken);
+      this.type = resData.userToLogin.type;
       await this.fetchNotifications()
+      } catch (error) {
+        console.log(error.message)
+      }
 		}
   }
 });

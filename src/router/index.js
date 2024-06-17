@@ -1,6 +1,9 @@
 import VueRouter from "vue-router";
 import routes from "./routes";
 
+//import { useUserStore } from "../stores/users"
+//const userStore = useUserStore()
+
 // configure router
 const router = new VueRouter({
   routes, // short for routes: routes
@@ -19,13 +22,13 @@ const logged = false
 const admin = true
 router.beforeEach((to, from, next) => {
   if (to.meta.alreadyAuth) {
-    if (!logged) {
+    if (/* userStore.foundUser != {} */ !logged) {
       next()
     } else if (from.name == null){
       next('dashboard')
     }
   } else if (to.meta.adminRequired) {
-    if (admin) {
+    if (/* userStore.getUserType == 'admin' */ admin) {
       next()
     } else if (from.name == null){
       next('dashboard')

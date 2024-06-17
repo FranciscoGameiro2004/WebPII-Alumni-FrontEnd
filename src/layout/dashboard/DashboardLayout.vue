@@ -86,6 +86,7 @@ import TopNavbar from "./TopNavbar.vue";
 import ContentFooter from "./ContentFooter.vue";
 import DashboardContent from "./Content.vue";
 import MobileMenu from "./MobileMenu";
+import { useUserStore } from '../../stores/users.js'
 export default {
   components: {
     TopNavbar,
@@ -101,12 +102,13 @@ export default {
   },
   computed: {
     isAdmin() {
-      return true 
+      return this.userStore.getUserType == 'admin' 
     },
   },
   data() {
     return {
-      showTemplatePages: false
+      showTemplatePages: false,
+      userStore: useUserStore(),
     }
   },
 };

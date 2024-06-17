@@ -10,7 +10,8 @@ export default {
   },
   methods: {
     async login() {
-      console.clear();
+      try {
+        console.clear();
       console.log("userInput: " + this.userInput)
       console.log("passInput: " + this.passInput)
 
@@ -20,6 +21,12 @@ export default {
       }; console.log(data)
 
       await this.userStore.postLogin(data)
+
+      this.$router.push({ name: 'dashboard'})
+      } catch (error) {
+        //! Temporário
+        alert(error.message)
+      }
     }
   }
 }
