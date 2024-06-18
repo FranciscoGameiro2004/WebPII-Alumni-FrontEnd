@@ -20,8 +20,8 @@
     </div>
     <p></p>
     <div v-if="!ownProfile && logged" class="d-flex justify-content-center">
-      <base-button type="primary" v-if="following.some(targetUser => targetUser.userId != user.userId)">Follow</base-button>
-      <base-button simple type="primary" v-else>Unfollow</base-button>
+      <base-button @click="$emit('followingUser')" type="primary" v-if="following.some(targetUser => +targetUser.userId != +user.userId)">Follow</base-button>
+      <base-button @click="$emit('unfollowingUser')" simple type="primary" v-else>Unfollow</base-button>
     </div>
     <!-- <div slot="footer" class="button-container">
       <base-button icon round class="btn-facebook">
@@ -61,15 +61,15 @@ export default {
       },
     },
     logged: {
-      type: Boolean,
+      type: Object,
       default: () => {
-        return false;
+        return {};
       },
     },
     following: {
-      type: Boolean,
+      type: Array,
       default: () => {
-        return false;
+        return [];
       },
     },
   }

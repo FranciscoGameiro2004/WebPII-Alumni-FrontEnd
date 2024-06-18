@@ -155,27 +155,31 @@ export const useUserStore = defineStore('user', {
       console.log(data);
     },
     async fetchUserFollowing(id){
-      console.log('Fetch following users');
-      console.log(this.foundUserID);
+      try {
+        console.log('Fetch following users');
+      console.log(id);
       const data = await api.get(USERS_BASE_URL, `users/${id}`);
       this.userLoggedFollowing = data.following
+      } catch (error) {
+        
+      }
     },
     async followUser(id, followId){
       try {
         console.log('follow');
         console.log(this.getUserToken);
-        const data = await api.post(USERS_BASE_URL, `notifications/${id}`, {id: followId}, this.getUserToken);console.log(data);
+        const data = await api.post(USERS_BASE_URL, `users/${followId}/followers`, {id: followId}, this.getUserToken);console.log(data);
         this.fetchUserFollowing()
       } catch (error) {
         console.log('Error update noti:', error);
         //throw error;
       }
     },
-    async deleteUser(id, unfollowId){
+    async unfollowUser(id, unfollowId){
       try {
         console.log('unfollow');
         console.log(this.getUserToken);
-        const data = await api.delete(USERS_BASE_URL, `notifications/${id}`, {id: unfollowId}, this.getUserToken);console.log(data);
+        const data = await api.del(USERS_BASE_URL, `users/${unfollowId}/followers`, {id: unfollowId}, this.getUserToken);console.log(data);
         this.fetchUserFollowing()
       } catch (error) {
         console.log('Error update noti:', error);

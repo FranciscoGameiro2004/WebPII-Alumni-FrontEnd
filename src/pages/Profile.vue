@@ -143,18 +143,16 @@ export default {
     try {
       this.userStore.fetchUserFollowing(this.userLogged.id)
     } catch (error) {
-      
+      console.log('erroooooooooooooooooooooooooooo');
     }
   },
-  updated () {
-    this.institutionStore.fetchAllInstitutions();
-    this.degreeStore.fetchAllDegrees();
+  /* updated () {
     try {
       this.userStore.fetchUserFollowing(this.userLogged.id)
     } catch (error) {
       
     }
-  },
+  }, */
   /*
   watch: {
     // Observando mudanças em userLogged e userToken
@@ -180,6 +178,8 @@ export default {
         :ownProfile="searchUser.userId == userLogged.id"
         :logged="userStore.getUserLogged"
         :following="followingList"
+        @followingUser="userStore.followUser(userLogged.id, $route.params.id); userStore.fetchUserFollowing(userLogged.id)"
+        @unfollowingUser="userStore.unfollowUser(userLogged.id, $route.params.id); userStore.fetchUserFollowing(userLogged.id)"
       >
       </user-card>
     </div>
