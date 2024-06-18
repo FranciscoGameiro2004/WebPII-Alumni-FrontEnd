@@ -92,6 +92,9 @@ export default {
     degreesList() {
       return this.degreeStore.getAll;
     },
+    followingList() {
+      return this.userStore.getFollowingUsers
+    }
   },
   methods: {
     toggleEdit() {
@@ -137,6 +140,20 @@ export default {
     console.log(this.userLogged);
     this.institutionStore.fetchAllInstitutions();
     this.degreeStore.fetchAllDegrees();
+    try {
+      this.userStore.fetchUserFollowing(this.userLogged.id)
+    } catch (error) {
+      
+    }
+  },
+  updated () {
+    this.institutionStore.fetchAllInstitutions();
+    this.degreeStore.fetchAllDegrees();
+    try {
+      this.userStore.fetchUserFollowing(this.userLogged.id)
+    } catch (error) {
+      
+    }
   },
   /*
   watch: {
@@ -161,6 +178,8 @@ export default {
       <user-card
         :user="searchUser"
         :ownProfile="searchUser.userId == userLogged.id"
+        :logged="userStore.getUserLogged"
+        :following="followingList"
       >
       </user-card>
     </div>

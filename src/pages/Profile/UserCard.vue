@@ -19,8 +19,8 @@
       </p>
     </div>
     <p></p>
-    <div v-if="!ownProfile" class="d-flex justify-content-center">
-      <base-button type="primary" v-if="!user.following">Follow</base-button>
+    <div v-if="!ownProfile && logged" class="d-flex justify-content-center">
+      <base-button type="primary" v-if="following.some(targetUser => targetUser.userId != user.userId)">Follow</base-button>
       <base-button simple type="primary" v-else>Unfollow</base-button>
     </div>
     <!-- <div slot="footer" class="button-container">
@@ -45,6 +45,7 @@
   </card>
 </template>
 <script>
+import { useUserStore } from '../../stores/users';
 export default {
   props: {
     user: {
@@ -54,6 +55,18 @@ export default {
       },
     },
     ownProfile: {
+      type: Boolean,
+      default: () => {
+        return false;
+      },
+    },
+    logged: {
+      type: Boolean,
+      default: () => {
+        return false;
+      },
+    },
+    following: {
       type: Boolean,
       default: () => {
         return false;

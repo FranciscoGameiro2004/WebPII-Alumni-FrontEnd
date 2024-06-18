@@ -15,6 +15,7 @@ export const useUserStore = defineStore('user', {
     searchUser: {},
     //userLogged data
     userLogged: null,
+    userLoggedFollowing: [],
 		userToken: '',
     userNotifications: [],
     type: 'normal',
@@ -25,6 +26,7 @@ export const useUserStore = defineStore('user', {
     getUsers: (state) => state.users.data,
     getUserPageInfo: (state) => state.users.pagination,
     getUser: (state) => state.foundUser,
+    getFollowingUsers: (state) => state.userLoggedFollowing,
     getSearchUser: (state) => state.searchUser,
     //userLogged getters
     getUserLogged: (state) => state.userLogged,
@@ -151,6 +153,34 @@ export const useUserStore = defineStore('user', {
         removeDegrees: [degreeToRemove]
       }, this.getUserToken);
       console.log(data);
+    },
+    async fetchUserFollowing(id){
+      console.log('Fetch following users');
+      console.log(this.foundUserID);
+      const data = await api.get(USERS_BASE_URL, `users/${id}`);
+      this.userLoggedFollowing = data.following
+    },
+    async followUser(id, followId){
+      try {
+        console.log('follow');
+        console.log(this.getUserToken);
+        const data = await api.post(USERS_BASE_URL, `notifications/${id}`, {id: followId}, this.getUserToken);console.log(data);
+        this.fetchUserFollowing()
+      } catch (error) {
+        console.log('Error update noti:', error);
+        //throw error;
+      }
+    },
+    async deleteUser(id, unfollowId){
+      try {
+        console.log('unfollow');
+        console.log(this.getUserToken);
+        const data = await api.delete(USERS_BASE_URL, `notifications/${id}`, {id: unfollowId}, this.getUserToken);console.log(data);
+        this.fetchUserFollowing()
+      } catch (error) {
+        console.log('Error update noti:', error);
+        //throw error;
+      }
     }
   }
 });
