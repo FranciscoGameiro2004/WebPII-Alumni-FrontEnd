@@ -15,7 +15,7 @@ export default {
       searchQuery: "",
       session: false,
       //! DUMMY USERS
-      users: [
+      /* users: [
         {
           id: 1,
           name: "	Andrew Mike",
@@ -34,7 +34,7 @@ export default {
           restricted: false,
           profilePicURL: 'https://placehold.co/240',
         },
-      ],
+      ], */
     };
   },
   components: {
@@ -54,7 +54,8 @@ export default {
     },
     filteredUsers() {
       const users = this.users.filter((user) =>
-        user.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+        user.name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+        user.username.toLowerCase().includes(this.searchQuery.toLowerCase()) 
       );
       return this.searchQuery !== "" ? users : [];
     },
@@ -64,6 +65,9 @@ export default {
     userNotifications() {
       return this.userStore.getNotifications
     },
+    users() {
+      return this.userStore.getAll
+    }
   },
   methods: {
     capitalizeFirstLetter(string) {
@@ -99,7 +103,10 @@ export default {
       },
       immediate: true,
     },
-  }
+  },
+  mounted () {
+    this.userStore.fetchAllUsers();
+  },
 };
 </script>
 
@@ -186,7 +193,7 @@ export default {
                       <img
                         slot="image"
                         class=""
-                        :src="user.profilePicURL"
+                        :src="user.profilePicLink"
                         alt="Card image cap"
                         height="115px"
                         width="115px" />
@@ -202,7 +209,7 @@ export default {
                               {{ user.name }}
                             </h2>
                             <h5 class="card-subtitle mb-2">
-                              LVL {{ user.level }} - {{ user.nameTag }}
+                              {{ user.username }}
                             </h5>
                           </div>
                         </div>

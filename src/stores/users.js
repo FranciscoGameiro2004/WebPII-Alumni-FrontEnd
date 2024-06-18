@@ -20,7 +20,8 @@ export const useUserStore = defineStore('user', {
     userNotifications: [],
     type: 'normal',
     degrees: [],
-    jobs: []
+    jobs: [],
+    allUsers: []
   }),
   getters: {
     getUsers: (state) => state.users.data,
@@ -28,6 +29,7 @@ export const useUserStore = defineStore('user', {
     getUser: (state) => state.foundUser,
     getFollowingUsers: (state) => state.userLoggedFollowing,
     getSearchUser: (state) => state.searchUser,
+    getAll: (state) => state.allUsers,
     //userLogged getters
     getUserLogged: (state) => state.userLogged,
     getUserToken: (state) => state.userToken,
@@ -185,6 +187,16 @@ export const useUserStore = defineStore('user', {
         console.log('Error update noti:', error);
         //throw error;
       }
-    }
+    },
+    async fetchAllUsers() {
+      console.log('Fetching institutions');
+      try {
+        const data = await api.get(USERS_BASE_URL, `users?limit=${999999}&page=${0}`); //console.log(data);
+        this.allUsers = data.data; //console.log(this.institutions) // Armazena os dados no estado
+      } catch (error) {
+        console.error('Error fetching every institution:', error);
+        throw error;
+      }
+    },
   }
 });
