@@ -192,7 +192,7 @@ export default {
         ],
         gradientStops: [1, 0.4, 0],
       },
-      blueBarChart: {
+      /* blueBarChart: {
         extraOptions: chartConfigs.barChartOptions,
         chartData: {
           labels: ["Licenciado", "Mestre", "Especialista", "Doutor"],
@@ -210,7 +210,7 @@ export default {
         },
         gradientColors: config.colors.primaryGradient,
         gradientStops: [1, 0.4, 0],
-      },
+      }, */
       /* blueBarChart2: {
         extraOptions: chartConfigs.barChartOptions,
         chartData: {
@@ -256,7 +256,13 @@ export default {
       numOfEmployed: 0,
       numOfUnemployed: 0,
 
+      numOfUndergraduated: 0,
+      numOfMaster: 0,
+      numOfSpecialist: 0,
+      numOfDoctor: 0,
+
       trueFlag: false,
+      biggestTitleType: -1,
     }
 
   },
@@ -276,6 +282,14 @@ export default {
         unemployed: this.numOfUnemployed
       }
     },
+    biggestTitleObtained(){
+      return {
+        undergraduate: this.numOfUndergraduated,
+        master: this.numOfMaster,
+        specialist: this.numOfSpecialist,
+        theDoctor: this.numOfDoctor
+      }
+    },
 
 
 
@@ -293,6 +307,27 @@ export default {
               borderDash: [],
               borderDashOffset: 0.0,
               data: [this.alumniEmployability.employed, this.alumniEmployability.unemployed],
+            },
+          ],
+        },
+        gradientColors: config.colors.primaryGradient,
+        gradientStops: [1, 0.4, 0],
+      }
+    },
+    blueBarChart(){
+      return {
+        extraOptions: chartConfigs.barChartOptions,
+        chartData: {
+          labels: ["Licenciado", "Mestre", "Especialista", "Doutor"],
+          datasets: [
+            {
+              label: "Countries",
+              fill: true,
+              borderColor: config.colors.info,
+              borderWidth: 2,
+              borderDash: [],
+              borderDashOffset: 0.0,
+              data: [this.numOfUndergraduated, this.numOfMaster, this.numOfSpecialist, this.numOfDoctor],
             },
           ],
         },
@@ -349,6 +384,36 @@ export default {
           
         }
       });
+    },
+    async countBiggestTitle(){
+      await this.userStore.fetchAllUsers()
+      this.userStore.getAll.forEach(async (user, index) => {
+        alert(user.id)
+        this.biggestTitleType = -1
+        try {
+          await this.userStore.searchUserById(user.id)
+        let searchedUser = this.userStore.getSearchUser
+        console.log(searchedUser);
+        for(degree of searchedUser.degrees){
+          if (degree.degreeType > this.biggestTitleType) {
+            this.biggestTitleType = degree.degreeType
+          }
+        }
+        if (this.biggestTitleType == 2){
+          this.numOfUndergraduated += 1
+        } else if (this.biggestTitleType == 3) {
+          this.numOfSpecialist += 1
+        } else if (this.biggestTitleType == 4) {
+          this.numOfMaster += 1
+        } else if (this.biggestTitleType == 5) {
+          this.numOfDoctor += 1
+        } 
+        } catch (error) {
+          console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+          console.log(searchedUser);
+          alert(error.message)
+        }
+      });
     }
   },
   mounted() {
@@ -360,6 +425,7 @@ export default {
     }
     this.initBigChart(0);
     this.calculateEmployability()
+    this.countBiggestTitle()
   },
   beforeDestroy() {
     if (this.$rtl.isRTL) {
