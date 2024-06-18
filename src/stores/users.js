@@ -115,6 +115,42 @@ export const useUserStore = defineStore('user', {
       console.log(updateInfo);
       const data = await api.patch(USERS_BASE_URL, `users/${id}`, updateInfo, this.getUserToken);
       console.log(data);
+    },
+    async addDegreeToUser(degreeToAdd){
+      console.log('Update info');
+      console.log(this.getUserToken);
+      console.log(degreeToAdd);
+      const data = await api.patch(USERS_BASE_URL, `users/me`, {
+        addJobs: [],
+        removeJobs: [],
+        addDegrees: [degreeToAdd],
+        removeDegrees: []
+      }, this.getUserToken);
+      console.log(data);
+    },
+    async updateDegreeToUser(degreeToUpdate, originalDegree){
+      console.log('Update info');
+      console.log(this.getUserToken);
+      console.log(degreeToUpdate);
+      const data = await api.patch(USERS_BASE_URL, `users/me`, {
+        addJobs: [],
+        removeJobs: [],
+        addDegrees: [degreeToUpdate],
+        removeDegrees: [originalDegree]
+      }, this.getUserToken);
+      console.log(data);
+    },
+    async removeDegreeToUser(degreeToRemove){
+      console.log('Update info');
+      console.log(this.getUserToken);
+      console.log(degreeToRemove);
+      const data = await api.patch(USERS_BASE_URL, `users/me`, {
+        addJobs: [],
+        removeJobs: [],
+        addDegrees: [],
+        removeDegrees: [degreeToRemove]
+      }, this.getUserToken);
+      console.log(data);
     }
   }
 });

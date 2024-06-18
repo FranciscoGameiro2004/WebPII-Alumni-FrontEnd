@@ -3,6 +3,8 @@ import EditProfileForm from "./Profile/EditProfileForm";
 import UserCard from "./Profile/UserCard";
 import Modal from "../components/Modal";
 import { useUserStore } from "../stores/users";
+import { useInstitutionsStore } from "../stores/institutions";
+import { useDegreesStore } from "../stores/degrees";
 
 export default {
   components: {
@@ -13,6 +15,8 @@ export default {
   data() {
     return {
       userStore: useUserStore(),
+      institutionStore: useInstitutionsStore(),
+      degreeStore: useDegreesStore(),
       userLogged: {},
       model: {
         company: "Creative Code Inc.",
@@ -35,6 +39,18 @@ export default {
       modals: {
         newCareer: false,
         newAcademic: false,
+      },
+      academicModalInputs: {
+        institutionId: 0,
+        degreeId: 0,
+        firstYear: "",
+        lastYear: "",
+      },
+      originalAcademicModalInputs: {
+        institutionId: 0,
+        degreeId: 0,
+        firstYear: "",
+        lastYear: "",
       },
       edit: true,
     };
@@ -70,6 +86,12 @@ export default {
     searchUser() {
       return this.userStore.getSearchUser;
     },
+    institutionsList() {
+      return this.institutionStore.getAll;
+    },
+    degreesList() {
+      return this.degreeStore.getAll;
+    },
   },
   methods: {
     toggleEdit() {
@@ -78,6 +100,32 @@ export default {
     toggleAdd() {
       this.edit = false;
     },
+    addDegree(){
+      this.userStore.addDegreeToUser({
+        degreeId: this.academicModalInputs.degreeId,
+        firstYear: this.academicModalInputs.firstYear,
+        lastYear: this.academicModalInputs.lastYear
+      })
+    },
+    updateDegree(){
+      this.userStore.updateDegreeToUser({
+        degreeId: this.academicModalInputs.degreeId,
+        firstYear: this.academicModalInputs.firstYear,
+        lastYear: this.academicModalInputs.lastYear
+      },
+      {
+        degreeId: this.originalAcademicModalInputs.degreeId,
+        firstYear: this.originalAcademicModalInputs.firstYear,
+        lastYear: this.originalAcademicModalInputs.lastYear
+      })
+    },
+    deleteDegree(degreeToDelete){
+      this.userStore.removeDegreeToUser({
+        degreeId: degreeToDelete.degreeId,
+        firstYear: degreeToDelete.firstYear,
+        lastYear: degreeToDelete.lastYear
+      })
+    }
   },
   mounted() {
     console.log("Profile.vue");
@@ -87,6 +135,8 @@ export default {
     console.log(this.userId);
     this.userLogged = this.userStore.getUserLogged;
     console.log(this.userLogged);
+    this.institutionStore.fetchAllInstitutions();
+    this.degreeStore.fetchAllDegrees();
   },
   /*
   watch: {
@@ -119,7 +169,7 @@ export default {
       :class="classShow"
       v-if="userDegrees || searchUser.userId == userLogged.id"
     >
-      <card >
+      <card>
         <div class="d-flex justify-content-between">
           <h4 class="card-title">Academic</h4>
           <base-button
@@ -129,6 +179,10 @@ export default {
             v-if="searchUser.userId == userLogged.id"
             @click="
               toggleAdd();
+              academicModalInputs.degreeId = 0;
+              academicModalInputs.institutionId = 0;
+              academicModalInputs.firstYear = '';
+              academicModalInputs.lastYear = '';
               modals.newAcademic = true;
             "
           >
@@ -136,7 +190,11 @@ export default {
           </base-button>
         </div>
 
-        <card class="d-flex flex-row" v-for="degree of userDegrees" :key="degree.degrees">
+        <card
+          class="d-flex flex-row"
+          v-for="degree of userDegrees"
+          :key="degree.DegreeId"
+        >
           <img
             slot="image"
             class=""
@@ -172,12 +230,27 @@ export default {
                 type="warning"
                 @click="
                   toggleEdit();
+                  academicModalInputs.institutionId = degree.institutionId;
+                  academicModalInputs.degreeId = degree.degreeId;
+                  academicModalInputs.firstYear = degree.firstYear;
+                  academicModalInputs.lastYear = degree.lastYear;
+
+                  originalAcademicModalInputs.institutionId = degree.institutionId;
+                  originalAcademicModalInputs.degreeId = degree.degreeId;
+                  originalAcademicModalInputs.firstYear = degree.firstYear;
+                  originalAcademicModalInputs.lastYear = degree.lastYear;
                   modals.newAcademic = true;
                 "
               >
                 <i class="tim-icons icon-pencil text-white"></i>
               </base-button>
-              <base-button round icon type="danger">
+              <base-button round icon type="danger" @click="deleteDegree(
+                {
+                  degreeId: degree.degreeId,
+                  firstYear: degree.firstYear,
+                  lastYear: degree.lastYear
+                }
+                )">
                 <i class="tim-icons icon-trash-simple text-white"></i>
               </base-button>
             </div>
@@ -314,21 +387,36 @@ export default {
       </template>
       <div>
         <base-input label="Institution">
-          <select class="form-control" id="exampleFormControlSelect1">
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
+          <select
+            class="form-control"
+            id="exampleFormControlSelect1"
+            v-model="academicModalInputs.institutionId"
+          >
+            <option
+              v-for="institution in institutionsList"
+              :key="institution.id"
+              :value="institution.id"
+            >
+              {{ institution.designation }}
+            </option>
           </select>
         </base-input>
         <base-input label="Degree">
-          <select class="form-control" id="exampleFormControlSelect1">
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
+          <select
+            class="form-control"
+            id="exampleFormControlSelect1"
+            v-model="academicModalInputs.degreeId"
+          >
+            <option
+              v-for="degree in degreesList.filter(
+                (degree) =>
+                  degree.InstitutionId == this.academicModalInputs.institutionId
+              )"
+              :key="degree.id"
+              :value="degree.id"
+            >
+              {{ degree.designation }}
+            </option>
           </select>
         </base-input>
         <div class="d-flex justify-content-center">
@@ -337,6 +425,7 @@ export default {
             label="First Year"
             type="number"
             placeholder="YYYY"
+            v-model="academicModalInputs.firstYear"
           >
           </base-input>
           <base-input
@@ -344,6 +433,7 @@ export default {
             label="Last Year"
             type="number"
             placeholder="YYYY"
+            v-model="academicModalInputs.lastYear"
           >
           </base-input>
         </div>
@@ -352,8 +442,8 @@ export default {
         <base-button type="secondary" @click="modals.newAcademic = false"
           >Close</base-button
         >
-        <base-button type="primary" v-if="!editModal">Add</base-button>
-        <base-button v-else type="primary">Save changes</base-button>
+        <base-button type="primary" v-if="!editModal" @click="addDegree()">Add</base-button>
+        <base-button v-else type="primary" @click="updateDegree()">Save changes</base-button>
       </template>
     </modal>
   </div>
