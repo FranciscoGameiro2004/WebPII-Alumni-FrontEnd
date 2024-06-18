@@ -5,40 +5,41 @@
     <div class="row">
       <div class="col-md-6 pr-md-1">
         <base-input
-          label="Username"
-          placeholder="Username"
-          v-model="model.username"
+          label="Name"
+          v-model="editProfileInputs.name"
+          placeholder="Name"
         >
         </base-input>
       </div>
+      <div class="col-md-6 pl-md-1">
+        <base-input
+          label="Username"
+          v-model="editProfileInputs.username"
+          placeholder="Username"
+        >
+        </base-input>
+      </div>
+    </div>
+    <div class="row">
       <div class="col-md-6 pl-md-1">
         <base-input
           label="Email address"
           type="email"
-          placeholder="mike@email.com"
+          placeholder="Email here"
+          v-model="editProfileInputs.email"
         >
         </base-input>
       </div>
-    </div>
-    <div class="row">
       <div class="col-md-6 pr-md-1">
         <base-input
-          label="First Name"
-          v-model="model.firstName"
-          placeholder="First Name"
-        >
-        </base-input>
-      </div>
-      <div class="col-md-6 pl-md-1">
-        <base-input
-          label="Last Name"
-          v-model="model.lastName"
-          placeholder="Last Name"
+          label="Password"
+          placeholder="123456 is a bad example of a password"
         >
         </base-input>
       </div>
     </div>
-    <div class="row">
+    
+    <!-- <div class="row">
       <div class="col-md-12">
         <base-input
           label="Address"
@@ -47,8 +48,8 @@
         >
         </base-input>
       </div>
-    </div>
-    <div class="row">
+    </div> -->
+    <!-- <div class="row">
       <div class="col-md-4 pr-md-1">
         <base-input label="City" v-model="model.city" placeholder="City">
         </base-input>
@@ -64,17 +65,17 @@
       <div class="col-md-4 pl-md-1">
         <base-input label="Postal Code" placeholder="ZIP Code"> </base-input>
       </div>
-    </div>
+    </div> -->
     <div class="row">
       <div class="col-md-8">
         <base-input>
           <label>Privacy</label>
-          <base-checkbox> Show academic carrer to everyone </base-checkbox>
-          <base-checkbox> Show professional carrer to everyone </base-checkbox>
+          <base-checkbox v-model="editProfileInputs.showDegrees"> Show academic carrer to everyone </base-checkbox>
+          <base-checkbox v-model="editProfileInputs.showJobs"> Show professional carrer to everyone </base-checkbox>
         </base-input>
       </div>
     </div>
-    <base-button slot="footer" type="primary" fill>Save</base-button>
+    <base-button slot="footer" type="primary" @click="saveChanges" fill>Save</base-button>
   </card>
 </template>
 <script>
@@ -86,6 +87,22 @@ export default {
         return {};
       },
     },
+  },
+  data() {
+    return {
+      editProfileInputs: {
+        name: 'John Doe',
+        username: 'johnD0e',
+        email: 'john.doe@email.com',
+        showDegrees: true,
+        showJobs: true,
+      }
+    }
+  },
+  methods: {
+    saveChanges() {
+      alert('CHANGE')
+    }
   },
 };
 </script>
