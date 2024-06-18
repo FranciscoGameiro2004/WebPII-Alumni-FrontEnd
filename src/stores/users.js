@@ -108,6 +108,13 @@ export const useUserStore = defineStore('user', {
       console.log(data);
       this.degrees = data.degrees
       this.jobs = data.jobs
+    },
+    async updateUserInfo(id, updateInfo){
+      console.log('Update info');
+      console.log(this.getUserToken);
+      console.log(updateInfo);
+      const data = await api.patch(USERS_BASE_URL, `users/${id}`, updateInfo, this.getUserToken);
+      console.log(data);
     }
   }
 });
