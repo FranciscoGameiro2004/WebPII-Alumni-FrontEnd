@@ -95,6 +95,7 @@ import * as chartConfigs from "@/components/Charts/config";
 import TaskList from "./Dashboard/TaskList";
 import UserTable from "./Dashboard/UserTable";
 import config from "@/config";
+import { useUserStore } from '../stores/users';
 
 export default {
   components: {
@@ -105,6 +106,7 @@ export default {
   },
   data() {
     return {
+      userStore: useUserStore(),
       bigLineChart: {
         allData: [
           [100, 70, 90, 70, 85, 75, 90, 80, 110],
@@ -209,7 +211,7 @@ export default {
         gradientColors: config.colors.primaryGradient,
         gradientStops: [1, 0.4, 0],
       },
-      blueBarChart2: {
+      /* blueBarChart2: {
         extraOptions: chartConfigs.barChartOptions,
         chartData: {
           labels: ["Com Emprego", 'Sem Emprego'],
@@ -221,13 +223,13 @@ export default {
               borderWidth: 2,
               borderDash: [],
               borderDashOffset: 0.0,
-              data: [97, 3],
+              data: [0, 0],
             },
           ],
         },
         gradientColors: config.colors.primaryGradient,
         gradientStops: [1, 0.4, 0],
-      },
+      }, */
       bigLabels: [
       [
           "Vila do Conde",
@@ -249,8 +251,14 @@ export default {
           "Português",
           "Estrangeiro"
         ],
-      ]
-    };
+      ],
+
+      numOfEmployed: 0,
+      numOfUnemployed: 0,
+
+      trueFlag: false,
+    }
+
   },
   computed: {
     enableRTL() {
@@ -262,6 +270,36 @@ export default {
     bigLineChartCategories() {
       return ['Cidade', 'Gênero', 'Nacionalidade'];
     },
+    alumniEmployability(){
+      return {
+        employed: this.numOfEmployed,
+        unemployed: this.numOfUnemployed
+      }
+    },
+
+
+
+    blueBarChart2(){
+      return {
+        extraOptions: chartConfigs.barChartOptions,
+        chartData: {
+          labels: ["Com Emprego", 'Sem Emprego'],
+          datasets: [
+            {
+              label: "Countries",
+              fill: true,
+              borderColor: config.colors.info,
+              borderWidth: 2,
+              borderDash: [],
+              borderDashOffset: 0.0,
+              data: [this.alumniEmployability.employed, this.alumniEmployability.unemployed],
+            },
+          ],
+        },
+        gradientColors: config.colors.primaryGradient,
+        gradientStops: [1, 0.4, 0],
+      }
+    }
   },
   methods: {
     initBigChart(index) {
@@ -289,14 +327,39 @@ export default {
       this.bigLineChart.chartData = chartData;
       this.bigLineChart.activeIndex = index;
     },
+    async calculateEmployability(){
+      await this.userStore.fetchAllUsers()
+      this.userStore.getAll.forEach(async (user) => {
+        this.trueFlag = false
+        try {
+          await this.userStore.searchUserById(user.id)
+        let searchedUser = this.userStore.getSearchUser
+        console.log(searchedUser);
+        for(job of searchedUser.jobs){
+          if (job.lastYear == null || job.lastYear == undefined || job.lastYear == '') {
+            this.trueFlag = true
+          }
+        }
+        if (this.trueFlag){
+          this.numOfEmployed += 1
+        } else {
+          this.numOfUnemployed += 1
+        }
+        } catch (error) {
+          
+        }
+      });
+    }
   },
   mounted() {
+    this.userStore.fetchAllUsers()
     this.i18n = this.$i18n;
     if (this.enableRTL) {
       this.i18n.locale = "ar";
       this.$rtl.enableRTL();
     }
     this.initBigChart(0);
+    this.calculateEmployability()
   },
   beforeDestroy() {
     if (this.$rtl.isRTL) {
