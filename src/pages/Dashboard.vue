@@ -261,6 +261,9 @@ export default {
       numOfSpecialist: 0,
       numOfDoctor: 0,
 
+      numOfPortuguese: 0,
+      numOfForeigners: 0,
+
       trueFlag: false,
       biggestTitleType: -1,
     }
@@ -334,7 +337,7 @@ export default {
         gradientColors: config.colors.primaryGradient,
         gradientStops: [1, 0.4, 0],
       }
-    }
+    },
   },
   methods: {
     initBigChart(index) {
@@ -361,6 +364,8 @@ export default {
       this.$refs.bigChart.updateGradients(chartData);
       this.bigLineChart.chartData = chartData;
       this.bigLineChart.activeIndex = index;
+      this.bigLineChart.allData[2][0] = this.numOfPortuguese
+      this.bigLineChart.allData[2][1] = this.numOfForeigners
     },
     async calculateEmployability(){
       await this.userStore.fetchAllUsers()
@@ -388,7 +393,6 @@ export default {
     async countBiggestTitle(){
       await this.userStore.fetchAllUsers()
       this.userStore.getAll.forEach(async (user, index) => {
-        alert(user.id)
         this.biggestTitleType = -1
         try {
           await this.userStore.searchUserById(user.id)
@@ -411,7 +415,22 @@ export default {
         } catch (error) {
           console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
           console.log(searchedUser);
-          alert(error.message)
+        }
+      });
+    },
+    async countNationalities(){
+      await this.userStore.fetchAllUsers()
+      this.userStore.getAll.forEach(async (user, index) => {
+        this.biggestTitleType = -1
+        try {
+          
+        alert(user.nationality)
+        if (user.nationality == 'PT'){
+          this.numOfPortuguese ++
+        } else {
+          this.numOfForeigners ++
+        }
+        } catch (error) {
         }
       });
     }
@@ -423,6 +442,7 @@ export default {
       this.i18n.locale = "ar";
       this.$rtl.enableRTL();
     }
+    this.countNationalities()
     this.initBigChart(0);
     this.calculateEmployability()
     this.countBiggestTitle()
