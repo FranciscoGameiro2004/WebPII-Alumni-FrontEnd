@@ -72,5 +72,15 @@ export const usePublicationsStore = defineStore('publication', {
           //throw error;
         }
       },
+      async addPost(title, body){
+        try {
+          console.log('addPost');
+          console.log(this.getUserToken);
+          const data = await api.post(POSTS_BASE_URL, `${resources}/`, {title: title, body: body}, userStore.getUserToken);console.log(data);
+        } catch (error) {
+          console.log('Error update noti:', error);
+          //throw error;
+        }
+      },
   }
 });
