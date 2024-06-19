@@ -364,8 +364,8 @@ export default {
       this.$refs.bigChart.updateGradients(chartData);
       this.bigLineChart.chartData = chartData;
       this.bigLineChart.activeIndex = index;
-      this.bigLineChart.allData[2][0] = this.numOfPortuguese
-      this.bigLineChart.allData[2][1] = this.numOfForeigners
+      this.bigLineChart.allData[2][0] = Math.floor(this.numOfPortuguese / (this.numOfPortuguese + this.numOfForeigners)*100)
+      this.bigLineChart.allData[2][1] = Math.floor(this.numOfForeigners / (this.numOfPortuguese + this.numOfForeigners)*100)
     },
     async calculateEmployability(){
       await this.userStore.fetchAllUsers()
