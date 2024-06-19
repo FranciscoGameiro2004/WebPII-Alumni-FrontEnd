@@ -7,6 +7,16 @@
           :name="$t('sidebar.dashboard')"
           icon="tim-icons icon-chart-pie-36"
         />
+        <sidebar-link
+          to="/publications"
+          name="Posts"
+          icon="tim-icons icon-chat-33"
+        />
+        <sidebar-link
+          to="/events"
+          name="Events"
+          icon="tim-icons icon-calendar-60"
+        />
         <div v-if="isAdmin">
           <hr>
         <sidebar-link

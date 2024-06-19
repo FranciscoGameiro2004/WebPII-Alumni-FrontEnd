@@ -237,22 +237,20 @@ export default {
                 data-toggle="dropdown"
                 aria-expanded="true"
               >
-                <div class="notification d-none d-lg-block d-xl-block"></div>
-                <i class="tim-icons icon-sound-wave"></i>
+                <div v-if="userNotifications.length > 0" class="notification d-none d-lg-block d-xl-block"></div>
+                <i class="tim-icons icon-bell-55"></i>
                 <p class="d-lg-none">New Notifications</p>
               </a>
               <div v-if="userNotifications.length > 0">
                 <li class="nav-link" v-for="notification in userNotifications" :key="notification.id" @click="markNotification(notification.id)">
                 <a href="#" class="nav-item dropdown-item"
-                  >{{ notification.message }}</a
-                >
+                  >{{ notification.message }}</a>
               </li>
               </div>
               <div v-else>
                 <li class="nav-link" v-for="notification in userNotifications" :key="notification.id" @click="markNotification(notification.id)">
-                <p href="#" class="nav-item dropdown-item"
-                  >No notifications to read</p
-                >
+                <a href="#" class="nav-item dropdown-item"
+                  >No notifications to read</a>
               </li>
               </div>
             </base-dropdown>

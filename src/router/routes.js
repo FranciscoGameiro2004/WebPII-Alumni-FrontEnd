@@ -36,6 +36,18 @@ const UserConfig = () =>
 const EventConfig = () =>
   import(/* webpackChunkName: "common" */ "@/pages/ADMIN_EventsConfig.vue")
 
+const Events = () =>
+  import(/* webpackChunkName: "common" */ "@/pages/Events.vue")
+
+const Event = () =>
+  import(/* webpackChunkName: "common" */ "@/pages/Event.vue")
+
+const Publications = () =>
+  import(/* webpackChunkName: "common" */ "@/pages/Posts.vue")
+
+const Publication = () =>
+  import(/* webpackChunkName: "common" */ "@/pages/Post.vue")
+
 const routes = [
   {
     path: "/",
@@ -76,6 +88,27 @@ const routes = [
         path: "table-list",
         name: "table-list",
         component: TableList,
+      },
+      {
+        path: "events",
+        name: "events",
+        component: Events,
+      },
+      {
+        path: "events/:id",
+        name: "event",
+        component: Event,
+      },
+      
+      {
+        path: "publications",
+        name: "publications",
+        component: Publications,
+      },
+      {
+        path: "publications/:id",
+        name: "publication",
+        component: Publication,
       },
       {
         path: "login",

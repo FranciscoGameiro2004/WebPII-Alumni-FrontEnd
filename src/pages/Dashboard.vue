@@ -414,7 +414,7 @@ export default {
         } 
         } catch (error) {
           console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
-          console.log(searchedUser);
+          //console.log(searchedUser);
         }
       });
     },
@@ -424,7 +424,7 @@ export default {
         this.biggestTitleType = -1
         try {
           
-        alert(user.nationality)
+        //alert(user.nationality)
         if (user.nationality == 'PT'){
           this.numOfPortuguese ++
         } else {
