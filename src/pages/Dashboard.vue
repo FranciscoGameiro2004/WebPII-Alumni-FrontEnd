@@ -443,7 +443,7 @@ export default {
       this.$rtl.enableRTL();
     }
     this.countNationalities()
-    this.initBigChart(0);
+    this.initBigChart(2);
     this.calculateEmployability()
     this.countBiggestTitle()
   },
