@@ -18,7 +18,7 @@ export default {
   },
   computed: {
     eventsList() {
-      return this.eventsStore.getEvents
+      return this.eventsStore.getAll
     }
   },
   methods: {
@@ -31,7 +31,7 @@ export default {
     },
   },
   mounted () {
-    this.eventsStore.fetchEvents()
+    this.eventsStore.fetchAllEvents()
   },
 };
 

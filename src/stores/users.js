@@ -105,6 +105,14 @@ export const useUserStore = defineStore('user', {
         console.log(error.message)
       }
 		},
+    async postCreateAccount(data) {
+			try {
+        console.log('Fetching token'); //console.table(data)
+			const resData = await api.post(USERS_BASE_URL, `${resources}`, data); console.log(resData)
+      } catch (error) {
+        console.log(error.message)
+      }
+		},
     async fetchUserDegreesAndJobs(id){
       console.log('Fetch Degrees and Jobs');
       console.log(this.getUserToken);

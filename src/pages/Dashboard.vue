@@ -446,6 +446,7 @@ export default {
     this.initBigChart(2);
     this.calculateEmployability()
     this.countBiggestTitle()
+    this.initBigChart(2);
   },
   beforeDestroy() {
     if (this.$rtl.isRTL) {

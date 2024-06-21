@@ -18,10 +18,10 @@ export const useEventsStore = defineStore('events', {
     getParticipants: (state) => state.participants
   },
   actions: {
-    async fetchEvents() {
+    async fetchEvents(limit, page) {
       console.log('Fetching events');
       try {
-        const data = await api.get(EVENTS_BASE_URL, resources);console.log(data);
+        const data = await api.get(EVENTS_BASE_URL, `${resources}?limit=${limit}&page=${page}`);console.log(data);
         this.events = data; // Armazena os dados no estado
       } catch (error) {
         console.error('Error fetching events:', error);
