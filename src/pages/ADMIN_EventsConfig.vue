@@ -14,6 +14,9 @@ export default {
         newEvent: false,
       },
       edit: false,
+
+      nameInput: '',
+      descriptionInput: '',
     };
   },
   computed: {
@@ -27,8 +30,23 @@ export default {
     },
     toggleAdd() {
       this.edit = false;
+      this.nameInput = ''
+      this.descriptionInput = ''
       this.modals.newEvent = true;
     },
+    addEvent() {
+      let information = {
+        name: this.nameInput,
+        description: this.descriptionInput,
+        dates: []
+      }
+      this.eventsStore.addEvent(information)
+      this.eventsStore.fetchEvents()
+    },
+    removeEvent(id) {
+      this.eventsStore.removeEvent(id)
+      this.eventsStore.fetchAllEvents()
+    }
   },
   mounted () {
     this.eventsStore.fetchAllEvents()
@@ -95,7 +113,7 @@ export default {
               >
                 <i class="tim-icons icon-pencil text-white"></i>
               </base-button>
-              <base-button round icon type="danger">
+              <base-button round icon type="danger" @click="removeEvent(event.id)">
                 <i class="tim-icons icon-trash-simple text-white"></i>
               </base-button>
             </div>
@@ -125,33 +143,13 @@ export default {
         <base-input
           type="text"
           label="Event Name"
-        >
-        </base-input>
-        <base-input
-          type="number"
-          label="Phone Number"
-        >
-        </base-input>
-        <base-input
-          type="email"
-          label="Email"
-        >
-        </base-input>
-        <base-input
-          type="url"
-          label="Website"
+          v-model="nameInput"
         >
         </base-input>
         <base-input
           type="text"
-          label="Address"
-        >
-        </base-input>
-        <base-input
-          type="text"
-          label="Zip Code"
-          placeholder="1111-111"
-          class="col-md-6"
+          label="Description"
+          v-model="descriptionInput"
         >
         </base-input>
         <label for="" class="control-label">Image</label>
@@ -171,7 +169,7 @@ export default {
         <base-button type="secondary" @click="modals.newEvent = false"
           >Close</base-button
         >
-        <base-button type="primary" v-if="!edit">Add</base-button>
+        <base-button type="primary" v-if="!edit" @click="addEvent">Add</base-button>
         <base-button v-else type="primary">Save changes</base-button>
       </template>
     </card>

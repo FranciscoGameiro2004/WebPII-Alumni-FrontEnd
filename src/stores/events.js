@@ -1,5 +1,8 @@
 import { defineStore } from 'pinia';
 import * as api from '@/api/api.js';
+import { useUserStore } from './users';
+
+const userStore = useUserStore()
 
 const EVENTS_BASE_URL = 'http://127.0.0.1:3000';
 const resources = `events`;
@@ -53,6 +56,26 @@ export const useEventsStore = defineStore('events', {
         try {
           const data = await api.get(EVENTS_BASE_URL, `${resources}/${id}/participants`); //console.log(data);
           this.participants = data.participants; //console.log(this.publications) // Armazena os dados no estado
+        } catch (error) {
+          console.error('Error fetching a event:', error);
+          throw error;
+        }
+      },
+      async addEvent(info) {
+        console.log('Fetching event');
+        try {
+          const data = await api.post(EVENTS_BASE_URL, `${resources}`, info, userStore.getUserToken); //console.log(data);
+          //console.log(this.publications) // Armazena os dados no estado
+        } catch (error) {
+          console.error('Error fetching a event:', error);
+          throw error;
+        }
+      },
+      async removeEvent(id) {
+        console.log('Fetching event');
+        try {
+          const data = await api.del(EVENTS_BASE_URL, `${resources}/${id}`, {}, userStore.getUserToken); //console.log(data);
+          //console.log(this.publications) // Armazena os dados no estado
         } catch (error) {
           console.error('Error fetching a event:', error);
           throw error;
