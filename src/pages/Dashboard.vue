@@ -71,7 +71,11 @@
         <card type="chart">
           <template slot="header">
             <h2 class="card-title">{{ "Empregabilidade dos Licenciados" }}</h2>
-            <h5 class="card-category">{{ "Em até 1 ano após a conclusão da Licenciatura em Tecnologias e Sistemas de Informação para a Web" }}</h5>
+            <h5 class="card-category">
+              {{
+                "Em até 1 ano após a conclusão da Licenciatura em Tecnologias e Sistemas de Informação para a Web"
+              }}
+            </h5>
           </template>
           <div class="chart-area">
             <bar-chart
@@ -95,7 +99,7 @@ import * as chartConfigs from "@/components/Charts/config";
 import TaskList from "./Dashboard/TaskList";
 import UserTable from "./Dashboard/UserTable";
 import config from "@/config";
-import { useUserStore } from '../stores/users';
+import { useUserStore } from "../stores/users";
 
 export default {
   components: {
@@ -231,7 +235,7 @@ export default {
         gradientStops: [1, 0.4, 0],
       }, */
       bigLabels: [
-      [
+        [
           "Vila do Conde",
           "Póvoa de Varzim",
           "Porto",
@@ -242,15 +246,8 @@ export default {
           "Gondomar",
           "Santa Maria da Feira",
         ],
-        [
-          "Masculino",
-          "Feminino",
-          "Outro"
-        ],
-        [
-          "Português",
-          "Estrangeiro"
-        ],
+        ["Masculino", "Feminino", "Outro"],
+        ["Português", "Estrangeiro"],
       ],
 
       numOfEmployed: 0,
@@ -266,8 +263,7 @@ export default {
 
       trueFlag: false,
       biggestTitleType: -1,
-    }
-
+    };
   },
   computed: {
     enableRTL() {
@@ -277,30 +273,28 @@ export default {
       return this.$rtl.isRTL;
     },
     bigLineChartCategories() {
-      return ['Cidade', 'Gênero', 'Nacionalidade'];
+      return ["Cidade", "Gênero", "Nacionalidade"];
     },
-    alumniEmployability(){
+    alumniEmployability() {
       return {
         employed: this.numOfEmployed,
-        unemployed: this.numOfUnemployed
-      }
+        unemployed: this.numOfUnemployed,
+      };
     },
-    biggestTitleObtained(){
+    biggestTitleObtained() {
       return {
         undergraduate: this.numOfUndergraduated,
         master: this.numOfMaster,
         specialist: this.numOfSpecialist,
-        theDoctor: this.numOfDoctor
-      }
+        theDoctor: this.numOfDoctor,
+      };
     },
 
-
-
-    blueBarChart2(){
+    blueBarChart2() {
       return {
         extraOptions: chartConfigs.barChartOptions,
         chartData: {
-          labels: ["Com Emprego", 'Sem Emprego'],
+          labels: ["Com Emprego", "Sem Emprego"],
           datasets: [
             {
               label: "Countries",
@@ -309,15 +303,18 @@ export default {
               borderWidth: 2,
               borderDash: [],
               borderDashOffset: 0.0,
-              data: [this.alumniEmployability.employed, this.alumniEmployability.unemployed],
+              data: [
+                this.alumniEmployability.employed,
+                this.alumniEmployability.unemployed,
+              ],
             },
           ],
         },
         gradientColors: config.colors.primaryGradient,
         gradientStops: [1, 0.4, 0],
-      }
+      };
     },
-    blueBarChart(){
+    blueBarChart() {
       return {
         extraOptions: chartConfigs.barChartOptions,
         chartData: {
@@ -330,13 +327,18 @@ export default {
               borderWidth: 2,
               borderDash: [],
               borderDashOffset: 0.0,
-              data: [this.numOfUndergraduated, this.numOfMaster, this.numOfSpecialist, this.numOfDoctor],
+              data: [
+                this.numOfUndergraduated,
+                this.numOfMaster,
+                this.numOfSpecialist,
+                this.numOfDoctor,
+              ],
             },
           ],
         },
         gradientColors: config.colors.primaryGradient,
         gradientStops: [1, 0.4, 0],
-      }
+      };
     },
   },
   methods: {
@@ -359,93 +361,105 @@ export default {
             data: this.bigLineChart.allData[index],
           },
         ],
-        labels: this.bigLabels[index]
+        labels: this.bigLabels[index],
       };
       this.$refs.bigChart.updateGradients(chartData);
       this.bigLineChart.chartData = chartData;
       this.bigLineChart.activeIndex = index;
-      this.bigLineChart.allData[2][0] = Math.floor(this.numOfPortuguese / (this.numOfPortuguese + this.numOfForeigners)*100)
-      this.bigLineChart.allData[2][1] = Math.floor(this.numOfForeigners / (this.numOfPortuguese + this.numOfForeigners)*100)
+      this.bigLineChart.allData[2][0] = Math.floor(
+        (this.numOfPortuguese / (this.numOfPortuguese + this.numOfForeigners)) *
+          100
+      );
+      this.bigLineChart.allData[2][1] = Math.floor(
+        (this.numOfForeigners / (this.numOfPortuguese + this.numOfForeigners)) *
+          100
+      );
     },
-    async calculateEmployability(){
-      await this.userStore.fetchAllUsers()
+    async calculateEmployability() {
+      await this.userStore.fetchAllUsers();
       this.userStore.getAll.forEach(async (user) => {
-        this.trueFlag = false
+        this.trueFlag = false;
         try {
-          await this.userStore.searchUserById(user.id)
-        let searchedUser = this.userStore.getSearchUser
-        console.log(searchedUser);
-        for(job of searchedUser.jobs){
-          if (job.lastYear == null || job.lastYear == undefined || job.lastYear == '') {
-            this.trueFlag = true
+          await this.userStore.searchUserById(user.id);
+          let searchedUser = this.userStore.getSearchUser;
+          console.log(searchedUser);
+          for (job of searchedUser.jobs) {
+            try {
+              if (
+                job.lastYear == null ||
+                job.lastYear == undefined ||
+                job.lastYear == ""
+              ) {
+                this.trueFlag = true;
+              }
+            } catch (error) {}
           }
-        }
-        if (this.trueFlag){
-          this.numOfEmployed += 1
-        } else {
-          this.numOfUnemployed += 1
-        }
-        } catch (error) {
-          
-        }
+          if (this.trueFlag) {
+            this.numOfEmployed += 1;
+          } else {
+            this.numOfUnemployed += 1;
+          }
+        } catch (error) {}
       });
     },
-    async countBiggestTitle(){
-      await this.userStore.fetchAllUsers()
+    async countBiggestTitle() {
+      await this.userStore.fetchAllUsers();
       this.userStore.getAll.forEach(async (user, index) => {
-        this.biggestTitleType = -1
+        this.biggestTitleType = -1;
         try {
-          await this.userStore.searchUserById(user.id)
-        let searchedUser = this.userStore.getSearchUser
-        console.log(searchedUser);
-        for(degree of searchedUser.degrees){
-          if (degree.degreeType > this.biggestTitleType) {
-            this.biggestTitleType = degree.degreeType
+          try {
+            await this.userStore.searchUserById(user.id);
+            let searchedUser = this.userStore.getSearchUser;
+            console.log(searchedUser);
+            for (degree of searchedUser.degrees) {
+              if (degree.degreeType > this.biggestTitleType) {
+                this.biggestTitleType = degree.degreeType;
+              }
+            }
+          } catch (error) {}
+          if (this.biggestTitleType == 2) {
+            this.numOfUndergraduated += 1;
+          } else if (this.biggestTitleType == 3) {
+            this.numOfSpecialist += 1;
+          } else if (this.biggestTitleType == 4) {
+            this.numOfMaster += 1;
+          } else if (this.biggestTitleType == 5) {
+            this.numOfDoctor += 1;
           }
-        }
-        if (this.biggestTitleType == 2){
-          this.numOfUndergraduated += 1
-        } else if (this.biggestTitleType == 3) {
-          this.numOfSpecialist += 1
-        } else if (this.biggestTitleType == 4) {
-          this.numOfMaster += 1
-        } else if (this.biggestTitleType == 5) {
-          this.numOfDoctor += 1
-        } 
         } catch (error) {
-          console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+          console.log(
+            "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+          );
           //console.log(searchedUser);
         }
       });
     },
-    async countNationalities(){
-      await this.userStore.fetchAllUsers()
+    async countNationalities() {
+      await this.userStore.fetchAllUsers();
       this.userStore.getAll.forEach(async (user, index) => {
-        this.biggestTitleType = -1
+        this.biggestTitleType = -1;
         try {
-          
-        //alert(user.nationality)
-        if (user.nationality == 'PT'){
-          this.numOfPortuguese ++
-        } else {
-          this.numOfForeigners ++
-        }
-        } catch (error) {
-        }
+          //alert(user.nationality)
+          if (user.nationality == "PT") {
+            this.numOfPortuguese++;
+          } else {
+            this.numOfForeigners++;
+          }
+        } catch (error) {}
       });
-    }
+    },
   },
   mounted() {
-    this.userStore.fetchAllUsers()
+    this.userStore.fetchAllUsers();
     this.i18n = this.$i18n;
     if (this.enableRTL) {
       this.i18n.locale = "ar";
       this.$rtl.enableRTL();
     }
-    this.countNationalities()
+    this.countNationalities();
     this.initBigChart(2);
-    this.calculateEmployability()
-    this.countBiggestTitle()
+    this.calculateEmployability();
+    this.countBiggestTitle();
     this.initBigChart(2);
   },
   beforeDestroy() {
