@@ -11,9 +11,9 @@ export default {
     return {
       degreeStore: useDegreesStore(),
       modals: {
-        newInstitution: false,
+        newDegree: false,
       },
-      edit: false, institutionEdit:{},
+      edit: false, degreeEdit:{},
       currentPage: 1,
       itemsPerPage: 2,
     };
@@ -21,19 +21,54 @@ export default {
   computed: {
     degreesList() {
       return this.degreeStore.degrees;
-    }
+    },
+    totalPages() {
+      return Math.ceil(this.degreeStore.getDegrees.pagination.total / this.itemsPerPage);
+    },
   },
   methods: {
-    toggleEdit() {
+    toggleEdit(data) {
+      this.degreeEdit = data
       this.edit = true
     },
     toggleAdd() {
       this.edit = false
+      this.modals.newDegree = true
     },
+    nextPage() {
+      if (this.currentPage < this.totalPages) {
+        this.currentPage++;
+      }
+    },
+    prevPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+      }
+    },
+    async fetchData(page, limit) {
+      try {
+        await this.degreeStore.fetchDegrees(page, limit);
+      } 
+      catch (error) {
+        console.error('Failed to fetch institutions:', error);
+      }
+    },
+  },
+  watch: {
+    currentPage(newPage) {
+      this.fetchData(newPage - 1, this.itemsPerPage);  // Ajusta o índice da página para começar em 0
+    },
+    itemsPerPage(newLimit) {
+      this.fetchData(this.currentPage - 1, newLimit);  // Ajusta o índice da página para começar em 0
+    }
+  },
+  mounted() {
+    this.fetchData(this.currentPage - 1, this.itemsPerPage);  // Ajusta o índice da página para começar em 0
   },
   mounted() {
     console.clear();
     console.log("mounted")
+    console.log(this.degreesList)
     //this.fetchData(this.currentPage - 1, this.itemsPerPage);  // Ajusta o índice da página para começar em 0
   }
 };
@@ -65,15 +100,12 @@ export default {
           placeholder="Search"
           class="col-md-6"
         >
-        </base-input>
-        <base-input label="Institution" class="col-md-6">
-          <select class="form-control" id="exampleFormControlSelect1">
-            <option value="">Select</option>
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
+      </base-input>
+        <base-input label="Items per Page" class="col-md-6">
+          <select class="form-control" v-model="itemsPerPage">
+            <option :value="2">2</option>
+            <option :value="4">4</option>
+            <option :value="8">8</option>
           </select>
         </base-input>
       </div>
