@@ -20,7 +20,7 @@ export default {
   },
   computed: {
     degreesList() {
-      return this.degreeStore.degrees.data;
+      return this.degreeStore.getDegrees.data;
     },
     totalPages() {
       return Math.ceil(this.degreeStore.getDegrees.pagination.total / this.itemsPerPage);
@@ -61,18 +61,10 @@ export default {
     itemsPerPage(newLimit) {
       this.fetchData(this.currentPage - 1, newLimit);  // Ajusta o índice da página para começar em 0
     }
-  },/*
+  },
   mounted() {
     this.fetchData(this.currentPage - 1, this.itemsPerPage);  // Ajusta o índice da página para começar em 0
-  },*/
-  
-  mounted() {
-    console.clear();
-    console.log("mounted")
-    console.log(this.degreesList)
-    //this.fetchData(this.currentPage - 1, this.itemsPerPage);  // Ajusta o índice da página para começar em 0
-  }
-  
+  },
 };
 </script>
 

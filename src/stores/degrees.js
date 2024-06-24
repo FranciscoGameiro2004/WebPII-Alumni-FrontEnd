@@ -14,11 +14,13 @@ export const useDegreesStore = defineStore('degree', {
     getAll: (state) => state.allDegrees
   },
   actions: {
-    async fetchDegrees(page=0, limit=4) {
-      console.log('Fetching degrees');
+    async fetchDegrees(page = 0, limit = 4) {
       try {
-        const data = await api.get(DEGREES_BASE_URL, `${resources}?limit=${limit}&page=${page}`); //console.log(data);
-        this.degrees = data; console.log(this.degrees);// Armazena os dados no estado 
+        console.log('Fetching degrees');
+        const data = await api.get(DEGREES_BASE_URL, `${resources}?limit=${limit}&page=${page}`);
+        console.log('Degrees data:', data); // Verifica o que foi retornado pela API
+        this.degrees = data; // Armazena os dados no estado
+        console.log('Degrees state:', this.degrees); // Verifica o estado após armazenar os dados
       } catch (error) {
         console.error('Error fetching degrees:', error);
         throw error;
