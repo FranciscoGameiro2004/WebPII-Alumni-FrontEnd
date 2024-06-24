@@ -18,7 +18,7 @@ export const useDegreesStore = defineStore('degree', {
       console.log('Fetching degrees');
       try {
         const data = await api.get(DEGREES_BASE_URL, `${resources}?limit=${limit}&page=${page}`); //console.log(data);
-        this.degrees = data; // Armazena os dados no estado
+        this.degrees = data; console.log(this.degrees);// Armazena os dados no estado 
       } catch (error) {
         console.error('Error fetching degrees:', error);
         throw error;
