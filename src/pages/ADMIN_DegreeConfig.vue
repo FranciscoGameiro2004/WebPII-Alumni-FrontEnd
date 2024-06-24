@@ -65,12 +65,14 @@ export default {
   mounted() {
     this.fetchData(this.currentPage - 1, this.itemsPerPage);  // Ajusta o índice da página para começar em 0
   },
+  /*
   mounted() {
     console.clear();
     console.log("mounted")
     console.log(this.degreesList)
     //this.fetchData(this.currentPage - 1, this.itemsPerPage);  // Ajusta o índice da página para começar em 0
   }
+  */
 };
 </script>
 
@@ -109,8 +111,6 @@ export default {
           </select>
         </base-input>
       </div>
-
-
 
       <!--hardcode-->
       <card class="d-flex flex-row col-md-6">
