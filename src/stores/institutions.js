@@ -14,7 +14,7 @@ export const useInstitutionsStore = defineStore('institution', {
     getAll: (state) => state.allInstitutions
   },
   actions: {
-    async fetchInstitutions(page=0, limit=5) {
+    async fetchInstitutions(page=0, limit=4) {
       console.log('Fetching institutions');
       try {
         const data = await api.get(INSTITUTION_BASE_URL, `${resources}?limit=${limit}&page=${page}`); //console.log(data);
