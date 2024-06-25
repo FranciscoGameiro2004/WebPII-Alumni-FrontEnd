@@ -304,8 +304,8 @@ export default {
               borderDash: [],
               borderDashOffset: 0.0,
               data: [
-                this.alumniEmployability.employed,
-                this.alumniEmployability.unemployed,
+                this.alumniEmployability.employed/(this.alumniEmployability.employed + this.alumniEmployability.unemployed)*100,
+                this.alumniEmployability.unemployed/(this.alumniEmployability.employed + this.alumniEmployability.unemployed)*100,
               ],
             },
           ],
